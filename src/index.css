@@ -1,0 +1,1022 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  color-scheme: light;
+
+  --bg: #f7f4f2;
+  --surface: #ffffff;
+  --surface-2: #eeeafa;
+  --text: #000000;
+  --text-2: #4d4c51;
+  --text-3: #767481;
+  --border: #cdcbd0;
+
+  --lavanda: #d8d1ff;
+  --lavanda-forte: #b7b2ff;
+  --lima: #d2e534;
+  --ceu: #89cdf3;
+
+  --sucesso: #1f9d55;
+  --erro: #e5484d;
+  --alerta: #f59e0b;
+
+  --sombra: rgba(198, 185, 237, 0.3) 5px 5px 20px 0px;
+  --r-card: 40px;
+  --r-card-m: 30px;
+  --r-badge: 30px;
+  --r-btn: 25px;
+  --r-nav: 15px;
+  --nav-h: 72px;
+
+  --fonte: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --black: #f7f4f2;
+  --carbon: #ffffff;
+  --charcoal: #ffffff;
+  --control: #eeeafa;
+  --divider: #cdcbd0;
+  --steel: #767481;
+  --silver: #4d4c51;
+  --polar: #000000;
+  --white: #ffffff;
+  --graphite: #000000;
+  --kleo: #000000;
+  --kleo-soft: #d8d1ff;
+  --green: #1f9d55;
+  --red: #e5484d;
+  --orange: #f59e0b;
+  --blue: #89cdf3;
+  --radius: 30px;
+  --radius-sm: 15px;
+  --radius-card: 30px;
+  --radius-chip: 30px;
+  --radius-pill: 25px;
+  --tracking-display: normal;
+  --tracking-body: normal;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--fonte);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: normal;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+::selection {
+  background: var(--lavanda);
+  color: #000;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: inherit;
+  border: none;
+  outline: none;
+  color: inherit;
+  background: none;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+button {
+  transition:
+    transform 0.12s,
+    opacity 0.2s,
+    background 0.2s,
+    color 0.2s;
+}
+button:disabled {
+  cursor: default;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 2px;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  letter-spacing: inherit;
+  outline: none;
+  color: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-3);
+  opacity: 1;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+html[data-fonte='grande'] #root {
+  zoom: 1.18;
+}
+/* Leaflet não compensa CSS zoom (cliques/arraste deslocados): o mapa fica sem zoom global */
+html[data-fonte='grande'] #root:has(.leaflet-container) {
+  zoom: 1;
+}
+
+html[data-contraste='alto'] {
+  --text-2: #1f1e23;
+  --text-3: #333238;
+  --border: #6e6c75;
+  --steel: #333238;
+  --silver: #1f1e23;
+  --divider: #6e6c75;
+  --surface-2: #e2dcf7;
+  --control: #e2dcf7;
+}
+
+html[data-contraste='alto'] .kleo-card {
+  outline: 1.5px solid var(--border);
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+#root.kleo-flash::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: inset 0 0 0 8px #000;
+  background: rgba(216, 209, 255, 0.55);
+  opacity: 0;
+  animation: flash 0.5s ease 3;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  animation: fadeUp 0.45s ease both;
+}
+
+.leaflet-container {
+  background: #eceae6 !important;
+  font-family: inherit !important;
+}
+.kleo-dark-tiles {
+  filter: none;
+}
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-radius: 10px 0 0 0;
+  font-size: 10px;
+}
+.leaflet-bar {
+  border: none !important;
+  box-shadow: var(--sombra) !important;
+  border-radius: var(--r-nav) !important;
+  overflow: hidden;
+}
+.leaflet-bar a {
+  color: #000 !important;
+}
+
+.girar {
+  animation: girar 0.9s linear infinite;
+}
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.route {
+  height: 100%;
+  width: 100%;
+}
+.route-fade {
+  animation: rotaFade 0.5s var(--ease-out) backwards;
+}
+.route-push {
+  animation: rotaPush 0.42s var(--ease-out) backwards;
+}
+.route-back {
+  animation: rotaBack 0.42s var(--ease-out) backwards;
+}
+
+.route-tab main {
+  animation: rotaTab 0.34s var(--ease-out) backwards;
+}
+
+@keyframes rotaFade {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rotaPush {
+  from {
+    opacity: 0;
+    transform: translateX(28%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rotaBack {
+  from {
+    opacity: 0;
+    transform: translateX(-22%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rotaTab {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anim-fade {
+  animation: aFade 0.4s var(--ease-out) backwards;
+}
+.anim-up {
+  animation: fadeUp 0.5s var(--ease-out) backwards;
+}
+.anim-pop {
+  animation: aPop 0.45s var(--spring) backwards;
+}
+.anim-scale {
+  animation: aScale 0.4s var(--ease-out) backwards;
+}
+.anim-left {
+  animation: aLeft 0.4s var(--ease-out) backwards;
+}
+.anim-right {
+  animation: aRight 0.4s var(--ease-out) backwards;
+}
+
+@keyframes aFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes aPop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes aScale {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes aLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes aRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.stagger > * {
+  animation: fadeUp 0.5s var(--ease-out) backwards;
+}
+.stagger > *:nth-child(1) {
+  animation-delay: 0.02s;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.1s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.14s;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 0.18s;
+}
+.stagger > *:nth-child(6) {
+  animation-delay: 0.22s;
+}
+.stagger > *:nth-child(7) {
+  animation-delay: 0.26s;
+}
+.stagger > *:nth-child(8) {
+  animation-delay: 0.3s;
+}
+.stagger > *:nth-child(n + 9) {
+  animation-delay: 0.34s;
+}
+
+.sheet-backdrop {
+  animation: aFade 0.25s ease backwards;
+}
+.sheet {
+  animation: sheetUp 0.45s var(--ease-out) backwards;
+}
+.modal {
+  animation: aPop 0.35s var(--spring) backwards;
+}
+@keyframes sheetUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.bolha-user {
+  animation: bolhaUser 0.35s var(--spring) backwards;
+  transform-origin: bottom right;
+}
+.bolha-kleo {
+  animation: bolhaKleo 0.4s var(--spring) backwards;
+  transform-origin: bottom left;
+}
+@keyframes bolhaUser {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bolhaKleo {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.check-pop {
+  animation: checkPop 0.35s var(--spring);
+}
+@keyframes checkPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.shake {
+  animation: shake 0.4s ease;
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: none;
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+.pulse-ring {
+  position: relative;
+}
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid var(--lavanda-forte);
+  animation: pulseRing 1.6s var(--ease-out) infinite;
+  pointer-events: none;
+}
+@keyframes pulseRing {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+.wave {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  height: 18px;
+}
+.wave > span {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  animation: wave 0.9s ease-in-out infinite;
+}
+.wave > span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.wave > span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.wave > span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.wave > span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+@keyframes wave {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 0%, #f8f6ff 50%, var(--surface-2) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s linear infinite;
+  border-radius: 15px;
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.tap {
+  transition:
+    transform 0.2s var(--ease-out),
+    background 0.2s,
+    border-color 0.2s;
+}
+.tap:hover {
+  transform: translateY(-2px);
+}
+.tap:active {
+  transform: scale(0.97);
+}
+
+.nav-ativo {
+  animation: aPop 0.4s var(--spring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.sheet-out {
+  animation: sheetDown 0.28s var(--ease-in-out) both;
+}
+.sheet-backdrop-out {
+  animation: aFadeOut 0.28s ease both;
+}
+.modal-out {
+  animation: aPopOut 0.2s ease both;
+}
+.anim-out {
+  animation: aFadeOut 0.22s ease both;
+}
+.item-out {
+  animation: itemOut 0.3s var(--ease-in-out) both;
+  overflow: hidden;
+}
+@keyframes sheetDown {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes aFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes aPopOut {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+@keyframes itemOut {
+  from {
+    opacity: 1;
+    transform: none;
+    max-height: 120px;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-24px);
+    max-height: 0;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.anim-tab {
+  animation: rotaTab 0.3s var(--ease-out) backwards;
+}
+
+.valor-muda {
+  animation: aPop 0.4s var(--spring);
+}
+
+.kleo-veu {
+  background: rgba(35, 28, 66, 0.32);
+}
+
+:root {
+  --kleo-tinta: #000;
+}
+html[data-tema='escuro'] {
+  --kleo-tinta: #fff;
+}
+
+.marca-olhos,
+.marca-antena,
+.marca-haste,
+.marca-bolinha,
+.marca-kleo,
+.marca-letra {
+  transform-box: fill-box;
+}
+
+@keyframes seloPiscar {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+.marca-piscando .marca-olhos {
+  transform-origin: center;
+  animation: seloPiscar 4.6s ease-in-out infinite;
+}
+
+@keyframes marcaAntena {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-5deg);
+  }
+  70% {
+    transform: rotate(4deg);
+  }
+}
+.marca-viva .marca-antena {
+  transform-origin: 50% 100%;
+  animation: marcaAntena 4.2s ease-in-out infinite;
+}
+
+.marca-entrada .marca-letra {
+  animation: marcaLetra 0.6s var(--ease-out) backwards;
+}
+.marca-entrada .marca-kleo {
+  transform-origin: 50% 100%;
+  animation: marcaQueda 1s var(--ease-out) 0.3s backwards;
+}
+.marca-entrada .marca-haste {
+  transform-origin: 50% 100%;
+  animation: marcaBrota 0.35s var(--ease-out) 0.74s backwards;
+}
+.marca-entrada .marca-bolinha {
+  transform-origin: center;
+  animation: marcaPop 0.55s var(--spring) 0.86s backwards;
+}
+.marca-entrada .marca-olhos {
+  transform-origin: center;
+  animation:
+    marcaAbre 0.5s var(--ease-out) 0.62s backwards,
+    seloPiscar 4.6s ease-in-out 1.6s infinite;
+}
+.marca-entrada .marca-slogan {
+  animation: fadeUp 0.6s var(--ease-out) 0.95s backwards;
+}
+.marca-entrada .marca-destaque {
+  transform-origin: left center;
+  animation: marcaRisca 0.55s var(--ease-out) 1.3s backwards;
+}
+
+@keyframes marcaLetra {
+  from {
+    opacity: 0;
+    transform: translateY(45%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes marcaQueda {
+  0% {
+    opacity: 0;
+    transform: translateY(-170%) scale(0.94, 1.07);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.88, 0.4);
+  }
+  14% {
+    opacity: 1;
+  }
+  36% {
+    transform: translateY(0) scale(0.97, 1.04);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  48% {
+    transform: translateY(0) scale(1.16, 0.84);
+    animation-timing-function: cubic-bezier(0.33, 0, 0.3, 1);
+  }
+  64% {
+    transform: translateY(-13%) scale(0.95, 1.06);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.75, 0.5);
+  }
+  78% {
+    transform: translateY(0) scale(1.04, 0.96);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes marcaBrota {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes marcaPop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes marcaAbre {
+  0%,
+  45% {
+    transform: scaleY(0.1);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes marcaRisca {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.marca-rapida .marca-letra {
+  animation-duration: 0.42s;
+}
+.marca-rapida .marca-kleo {
+  animation-duration: 0.6s;
+  animation-delay: 0.1s;
+}
+.marca-rapida .marca-haste {
+  animation-duration: 0.22s;
+  animation-delay: 0.4s;
+}
+.marca-rapida .marca-bolinha {
+  animation-duration: 0.34s;
+  animation-delay: 0.46s;
+}
+.marca-rapida .marca-olhos {
+  animation-duration: 0.3s, 4.6s;
+  animation-delay: 0.32s, 1.2s;
+}
+.marca-rapida .marca-slogan {
+  animation-duration: 0.4s;
+  animation-delay: 0.5s;
+}
+.marca-rapida .marca-destaque {
+  animation-duration: 0.4s;
+  animation-delay: 0.7s;
+}
+
+.abertura-halo {
+  animation: aberturaHalo 0.55s var(--ease-out) both;
+}
+.abertura-adesivo {
+  animation:
+    aberturaAdesivo 0.38s var(--spring) both,
+    aberturaFlutua 3s ease-in-out infinite;
+}
+.abertura-adesivo:nth-child(2) {
+  animation-delay: 0.2s, 0.8s;
+}
+.abertura-adesivo:nth-child(3) {
+  animation-delay: 0.28s, 1s;
+  animation-duration: 0.38s, 3.4s;
+}
+.abertura-adesivo:nth-child(4) {
+  animation-delay: 0.36s, 1.2s;
+  animation-duration: 0.38s, 2.7s;
+}
+.abertura-by {
+  animation: aFade 0.4s ease 0.3s both;
+}
+.abertura-frase {
+  animation: fadeUp 0.5s var(--ease-out) both;
+}
+
+.abertura-esperando .marca-kleo {
+  transform-origin: 50% 100%;
+  animation: aberturaPulo 1.7s linear infinite;
+}
+.abertura-esperando .abertura-halo {
+  animation: aberturaRespira 3.2s ease-in-out infinite;
+}
+
+.abertura-cena {
+  transition: transform 0.34s var(--ease-in-out);
+}
+.abertura-saindo .abertura-cena {
+  transform: scale(1.06);
+}
+
+.rotas-palco {
+  height: 100%;
+}
+html[data-abertura='revelando'] .rotas-palco {
+  animation: aberturaRevela 0.5s var(--ease-out) both;
+}
+
+@keyframes aberturaHalo {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes aberturaRespira {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.07);
+  }
+}
+@keyframes aberturaAdesivo {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes aberturaFlutua {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -7px;
+  }
+}
+
+@keyframes aberturaPulo {
+  0%,
+  36% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.4, 1);
+  }
+  44% {
+    transform: scale(1.07, 0.92);
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  60% {
+    transform: translateY(-14%) scale(0.96, 1.05);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.85, 0.45);
+  }
+  74% {
+    transform: translateY(0) scale(1.08, 0.91);
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  84%,
+  100% {
+    transform: none;
+  }
+}
+@keyframes aberturaRevela {
+  from {
+    opacity: 0;
+    transform: scale(0.965);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marca-piscando .marca-olhos,
+  .marca-viva .marca-antena,
+  .marca-entrada .marca-letra,
+  .marca-entrada .marca-kleo,
+  .marca-entrada .marca-haste,
+  .marca-entrada .marca-bolinha,
+  .marca-entrada .marca-olhos,
+  .marca-entrada .marca-slogan,
+  .marca-entrada .marca-destaque,
+  .abertura-halo,
+  .abertura-adesivo,
+  .abertura-by,
+  .abertura-frase,
+  .abertura-esperando .marca-kleo,
+  .abertura-esperando .abertura-halo,
+  html[data-abertura='revelando'] .rotas-palco {
+    animation: none !important;
+  }
+
+  .abertura {
+    transition-duration: 0.25s !important;
+  }
+  .abertura-saindo .abertura-cena {
+    transform: none;
+  }
+}
+
+html[data-tema='escuro'] {
+  color-scheme: dark;
+  filter: invert(1) hue-rotate(180deg);
+  background: #f7f4f2;
+}
+html[data-tema='escuro'] img,
+html[data-tema='escuro'] video,
+html[data-tema='escuro'] canvas,
+html[data-tema='escuro'] .leaflet-tile-pane,
+html[data-tema='escuro'] [data-sem-inverter] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html[data-tema='escuro'] .leaflet-tile-pane canvas,
+html[data-tema='escuro'] .leaflet-tile-pane img,
+html[data-tema='escuro'] [data-sem-inverter] img,
+html[data-tema='escuro'] [data-sem-inverter] canvas {
+  filter: none;
+}
+
+html[data-tema='escuro'] {
+  --sombra: rgba(198, 185, 237, 0.18) 4px 4px 16px 0px;
+}
+
+@keyframes pontoVivo {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  70% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+.ponto-vivo {
+  animation: pontoVivo 1.3s var(--ease-out) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ponto-vivo {
+    animation: none;
+  }
+}

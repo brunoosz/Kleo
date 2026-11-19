@@ -1,0 +1,10 @@
+node_modules
+dist
+release
+android
+ios
+kit
+*.zip
+package-lock.json
+public/*.png
+supabase

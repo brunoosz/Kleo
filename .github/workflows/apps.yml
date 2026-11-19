@@ -1,0 +1,140 @@
+# Gera os apps da Kleo na nuvem do GitHub (grátis em repositório público):
+#   - Windows: instalador .exe (electron-builder)
+#   - Android: APK de teste e, com a chave nos segredos, o APK final assinado
+#   - iPhone: projeto compilado SEM assinatura (.ipa sem assinatura; para instalar precisa assinar, veja kit/14)
+# Quando roda: manualmente (Actions > Apps da Kleo > Run workflow) ou ao criar uma tag v* (ex.: v1.0.0),
+# que também publica uma Release com os arquivos.
+# Nada de segredo no repositório: as chaves ficam em Settings > Secrets and variables > Actions.
+#   Variables (públicas, vão para dentro do app): VITE_API_BASE, VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, VITE_VAPID_PUBLIC_KEY
+#   Secrets (Android): KLEO_KEYSTORE_BASE64, KLEO_KEYSTORE_SENHA, KLEO_KEY_ALIAS, KLEO_KEY_SENHA
+name: Apps da Kleo
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apps-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VITE_API_BASE: ${{ vars.VITE_API_BASE }}
+  VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+  VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+  VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+  VITE_VAPID_PUBLIC_KEY: ${{ vars.VITE_VAPID_PUBLIC_KEY }}
+
+jobs:
+  windows:
+    name: Windows (.exe)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Gerar o instalador
+        run: npm run app:pc
+      - uses: actions/upload-artifact@v7
+        with:
+          name: kleo-windows
+          path: release/*.exe
+          if-no-files-found: error
+
+  android:
+    name: Android (.apk)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - uses: android-actions/setup-android@v4
+      - run: npm ci
+      - name: Chave de assinatura (só se os segredos existirem)
+        env:
+          KLEO_KEYSTORE_BASE64: ${{ secrets.KLEO_KEYSTORE_BASE64 }}
+        shell: bash
+        run: |
+          if [ -n "$KLEO_KEYSTORE_BASE64" ]; then
+            echo "$KLEO_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/kleo-android.jks"
+            echo "KLEO_KEYSTORE=$RUNNER_TEMP/kleo-android.jks" >> "$GITHUB_ENV"
+            echo "Chave encontrada: gera também o APK final assinado."
+          else
+            echo "Sem o segredo KLEO_KEYSTORE_BASE64: gera só o APK de teste."
+          fi
+      - name: Gerar o APK
+        env:
+          KLEO_KEYSTORE_SENHA: ${{ secrets.KLEO_KEYSTORE_SENHA }}
+          KLEO_KEY_ALIAS: ${{ secrets.KLEO_KEY_ALIAS }}
+          KLEO_KEY_SENHA: ${{ secrets.KLEO_KEY_SENHA }}
+        run: node scripts/app-android.mjs
+      - name: Apagar a chave do disco da máquina
+        if: always()
+        shell: bash
+        run: rm -f "$RUNNER_TEMP/kleo-android.jks"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: kleo-android
+          path: release/*.apk
+          if-no-files-found: error
+
+  ios:
+    name: iPhone (sem assinatura)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Build do site e cópia para o projeto iOS
+        run: npm run app:ios
+      - name: Compilar sem assinatura
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/derivado" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build
+      - name: Empacotar .ipa sem assinatura
+        run: |
+          VERSAO=$(node -p "require('./package.json').version")
+          mkdir -p "$RUNNER_TEMP/ipa/Payload" release
+          cp -R "$RUNNER_TEMP/derivado/Build/Products/Release-iphoneos/App.app" "$RUNNER_TEMP/ipa/Payload/"
+          (cd "$RUNNER_TEMP/ipa" && zip -qry "$GITHUB_WORKSPACE/release/Kleo-$VERSAO-iphone-sem-assinatura.ipa" Payload)
+      - uses: actions/upload-artifact@v7
+        with:
+          name: kleo-iphone
+          path: release/*.ipa
+          if-no-files-found: error
+
+  release:
+    name: Publicar Release (tags v*)
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [windows, android, ios]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: arquivos
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: arquivos/*
+          generate_release_notes: true

@@ -1,0 +1,195 @@
+PASSO 10 - PUBLICAR NA INTERNET (VERCEL)
+========================================
+
+O que é
+-------
+A Vercel coloca a Kleo num endereço com https (por exemplo https://kleo-app.vercel.app) que abre
+em qualquer celular ou computador. O mesmo endereço roda as funções do servidor da Kleo
+(a IA da Kleo e os avisos).
+Plano Hobby: grátis, sem cartão, e pode ser usado em projeto de faculdade.
+
+Antes de começar
+----------------
+- O .env.local preenchido (passos 05, 08 e 09). Você vai copiar os valores dele para a Vercel.
+- O VS Code aberto na pasta kleo-app.
+- No terminal, rode  npm run build  e espere. Tem que terminar com "built in ..." e sem a palavra
+  "error". Se der erro, não publique: copie a mensagem de erro e peça ajuda.
+
+
+PARTE 1 - CRIAR A CONTA (5 minutos, só na primeira vez)
+-------------------------------------------------------
+1. Abra:  https://vercel.com/signup
+2. Se perguntar o tipo de plano, escolha "Hobby" (projetos pessoais). Não pede cartão.
+3. Escolha como entrar:
+   - "Continue with GitHub" (mais fácil, se você tem GitHub), ou
+   - com e-mail: chega um código de 6 números no seu e-mail; digite o código na tela.
+4. Se a Vercel oferecer importar um repositório do GitHub ou um modelo (template), não precisa:
+   vamos publicar pelo terminal. Pode sair dessa tela.
+   O que aparece: o painel da Vercel (Dashboard).
+
+
+PARTE 2 - ENTRAR PELO TERMINAL (só na primeira vez)
+---------------------------------------------------
+1. No VS Code: menu Terminal > New Terminal.
+   Confira se o caminho mostrado termina em kleo-app.
+
+2. Digite:  npx vercel login   e aperte Enter.
+
+3. Se aparecer "Need to install the following packages: vercel@..." e "Ok to proceed? (y)",
+   digite  y  e aperte Enter.
+
+4. O terminal mostra um link e um código, e pede para apertar Enter para abrir o navegador.
+   Aperte Enter. No navegador, confira se o código é igual ao do terminal e confirme
+   (o botão pode se chamar "Confirm", "Allow" ou "Authorize").
+
+5. Volte ao terminal. O que aparece: uma mensagem de sucesso com o seu usuário ou e-mail.
+
+
+PARTE 3 - PRIMEIRA PUBLICAÇÃO (cria o projeto na Vercel)
+--------------------------------------------------------
+1. No terminal (pasta kleo-app), digite:  npx vercel --prod   e aperte Enter.
+
+2. Responda as perguntas. Use as setas do teclado para escolher e Enter para confirmar:
+   "Which team?" ............................ Enter (a sua conta)
+   "Which project?" ......................... escolha "Create a new project" e Enter
+   "Name?" .................................. deixe kleo-app (só Enter)
+   Aparece algo como: "Detected Vite (Build Command: npm run build, Output Directory: dist)".
+   "Customize settings? (y/N)" .............. N e Enter (as configurações já estão no vercel.json)
+
+   Se a sua versão fizer as perguntas antigas, responda assim:
+   "Set up and deploy ...?" ................. Y
+   "Which scope should contain your project?" Enter
+   "Link to existing project?" .............. N
+   "What's your project's name?" ............ kleo-app (só Enter)
+   "In which directory is your code located?" ./ (só Enter)
+   "Want to modify these settings?" ......... N
+
+   Apareceu outra pergunta que não está aqui? Aperte Enter (aceita a resposta padrão).
+
+3. Espere 1 a 2 minutos. No fim aparece uma linha "Production: https://....vercel.app".
+
+4. Descubra o ENDEREÇO OFICIAL (o curto, que abre para todo mundo):
+   a) Abra  https://vercel.com/dashboard  e clique no projeto kleo-app.
+   b) Em "Domains" aparece o endereço curto, por exemplo  kleo-app.vercel.app
+      (ou kleo-app-alguma-coisa.vercel.app, se o nome já existia).
+   c) Anote esse endereço. É ele que você divulga, usa no PWABuilder (passo 11) e no texto
+      para os professores (passo 12).
+   IMPORTANTE: o endereço comprido que o terminal mostra (com letras e números aleatórios no
+   meio) pede login da Vercel para quem abrir. Divulgue sempre o curto, do "Domains".
+
+5. Abra o endereço oficial no navegador. A Kleo abre, mas ainda sem as chaves:
+   a IA aparece como indisponível e as Conversas ficam no modo demonstração.
+   Agora vamos cadastrar as chaves.
+
+
+PARTE 4 - CADASTRAR AS VARIÁVEIS (as chaves)
+--------------------------------------------
+1. No painel da Vercel, dentro do projeto kleo-app, clique em "Settings" e depois em
+   "Environment Variables" (no menu da esquerda).
+
+2. Para CADA variável preenchida no seu .env.local:
+   a) No campo "Key" (em alguns painéis, "Name"), escreva o nome EXATO. Ex.: GEMINI_API_KEY
+   b) No campo "Value", cole o valor (o que vem depois do = no .env.local, sem aspas e sem espaços).
+   c) Em "Environments", deixe marcados Production, Preview e Development (o padrão).
+      Se aparecer uma opção "Sensitive" ou "Secret", pode deixar como veio.
+   d) Clique em "Save".
+   O que aparece: a variável na lista, embaixo, com o valor escondido.
+
+3. Lista do que cadastrar (só as que você preencheu):
+     VITE_SUPABASE_URL ............ passo 04
+     VITE_SUPABASE_ANON_KEY ....... passo 04
+     VITE_VAPID_PUBLIC_KEY ........ passo 09
+     GEMINI_API_KEY ............... passo 08 (reserva; a principal fica no Painel do dono, passo 13)
+     GROQ_API_KEY ................. passo 08 (opcional, reserva)
+     SUPABASE_SERVICE_ROLE_KEY .... passo 04
+     VAPID_PRIVATE_KEY ............ passo 09
+     VAPID_SUBJECT ................ passo 09
+   Não cadastre variáveis vazias. A KLEO_ORIGENS quase nunca é necessária (veja no fim).
+
+4. Confira os nomes letra por letra. Nome errado = a chave não funciona.
+
+
+PARTE 5 - PUBLICAR DE NOVO (obrigatório sempre que mexer nas variáveis)
+-----------------------------------------------------------------------
+As variáveis só valem para publicações NOVAS, e as que começam com VITE_ entram no app na
+hora de publicar.
+1. No terminal (pasta kleo-app):  npx vercel --prod   e Enter.
+   Agora não tem perguntas. Espere terminar (1 a 2 minutos).
+   Outro jeito, pelo painel: "Deployments" > três pontinhos (...) da publicação mais nova >
+   "Redeploy" > confirme em "Redeploy".
+
+
+PARTE 6 - CONFERIR (troque SEU-ENDERECO pelo endereço oficial)
+-------------------------------------------------------------
+1. IA:  abra  https://SEU-ENDERECO/api/ia?verificar=1
+   Deve aparecer "ok":true e "gemini":{"ok":true} (e "groq":{"ok":true}, se cadastrou o Groq).
+
+2. Avisos:  abra  https://SEU-ENDERECO/api/push
+   Deve aparecer {"servico":"avisos da Kleo","configurado":true}.
+   Se você não fez o passo 09, aparece "configurado":false. Tudo bem: só os avisos com o app
+   fechado ficam desligados.
+
+3. App: abra  https://SEU-ENDERECO
+   - Ajustes > Inteligência artificial: "IA da Kleo: ligada".
+   - Ajustes > Conversas: "Conversas ligadas".
+   - Ajustes > Sobre > "Compartilhar a Kleo": manda o endereço oficial.
+
+4. Prévia do link no WhatsApp (imagem og:image):
+   O app troca sozinho a imagem da prévia para o endereço completo quando é publicado na Vercel.
+   Para conferir: no Chrome, abra  view-source:https://SEU-ENDERECO  e procure (Ctrl+F) og:image.
+   Deve estar:  content="https://SEU-ENDERECO/og-kleo.png"
+   Se estiver só content="/og-kleo.png":
+   a) No VS Code, abra o arquivo index.html.
+   b) Nas linhas og:image e twitter:image, troque /og-kleo.png por https://SEU-ENDERECO/og-kleo.png
+   c) Salve e publique de novo (Parte 5).
+   O WhatsApp guarda a prévia antiga por um tempo. Teste mandando o link para você mesmo.
+
+
+PARTE 7 - ATUALIZAR DEPOIS (quando mudar o app)
+-----------------------------------------------
+1. Teste no computador (npm run dev).
+2. Rode  npm run build  para conferir se não há erro.
+3. Publique:  npx vercel --prod
+O endereço continua o mesmo. Quem instalou o app recebe a versão nova ao abrir de novo.
+Mudou uma chave de IA, voz ou mapa? Troque pelo app: Ajustes > Painel do dono (vale na hora,
+sem publicar de novo). Só as variáveis da Vercel (Settings > Environment Variables) pedem
+publicar de novo (Parte 5).
+
+
+SE DER ERRADO
+-------------
+Quem abre o link vê uma tela pedindo login da Vercel
+  Você mandou o endereço comprido. Mande o endereço oficial (o curto, do "Domains").
+  Em Settings > Deployment Protection, deixe "Standard Protection" (nunca "All Deployments").
+
+O terminal mostra "Error" e a publicação não termina
+  Rode  npm run build  no computador para ver o erro com calma. Para ver o erro na Vercel:
+  painel > "Deployments" > clique na publicação com erro > "Build Logs".
+
+/api/ia?verificar=1 mostra "ok":false
+  Falta a GEMINI_API_KEY (ou o nome está errado) na Vercel, ou você não publicou de novo
+  depois de cadastrar. Faça as Partes 4 e 5. Detalhes no passo 08.
+
+Ajustes > Conversas mostra "Desligadas" no site publicado
+  As variáveis VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY precisam estar cadastradas ANTES de
+  publicar. Cadastre e publique de novo (Parte 5).
+
+Ao abrir https://SEU-ENDERECO/api/ia aparece "404" ou "NOT_FOUND"
+  As funções do servidor não subiram. Confira se você rodou o npx vercel --prod dentro da pasta
+  kleo-app (onde ficam as pastas api e src) e publique de novo.
+
+"npx" não é reconhecido
+  O Node.js não está instalado ou o VS Code foi aberto antes de instalar. Feche e abra o VS Code.
+
+Domínio próprio e KLEO_ORIGENS (opcional)
+  O endereço da Vercel e um domínio próprio ligado a este mesmo projeto (Settings > Domains)
+  funcionam sem nada a mais. A KLEO_ORIGENS só é necessária se OUTRO site, de outro endereço,
+  for chamar a IA deste servidor. Nesse caso cadastre, por exemplo:
+  KLEO_ORIGENS=https://outro-site.com.br   (vários endereços separados por vírgula)
+
+Limites do plano grátis (Hobby)
+  Sobra para a apresentação e para os testes com professores e colegas.
+  Se um dia passar do limite, a Vercel avisa por e-mail e pode pausar o site até o mês seguinte.
+  Ela não cobra nada: o plano Hobby não tem cartão cadastrado.
+
+Próximo: 11-APP-PARA-BAIXAR-Android-iPhone-PC.txt

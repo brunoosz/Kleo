@@ -1,0 +1,137 @@
+PASSO 9 - CHAVES DOS AVISOS COM O APP FECHADO (VAPID)
+=====================================================
+
+Para que serve
+--------------
+Com os "Avisos com o app fechado", a pessoa recebe a notificação de mensagem e de pedido de
+ajuda mesmo com a Kleo fechada e o celular bloqueado.
+Para isso o navegador exige um PAR de chaves (chamado VAPID), que prova que os avisos vêm do
+seu site. Você gera o par uma vez só, com um comando. É grátis.
+
+Os avisos também precisam de:
+  - Conversas ligadas no Supabase (passos 01 a 05);
+  - a Secret key do Supabase (passo 04, item C) na variável SUPABASE_SERVICE_ROLE_KEY;
+  - o site publicado com https (passo 10).
+
+
+PARTE 1 - GERAR O PAR DE CHAVES (1 minuto, uma vez só)
+------------------------------------------------------
+1. Abra a pasta kleo-app no VS Code.
+
+2. Abra o terminal: menu Terminal > New Terminal.
+   Confira se o caminho mostrado termina em kleo-app.
+
+3. Digite o comando abaixo e aperte Enter:
+   npx web-push generate-vapid-keys
+
+4. O que aparece (as chaves de verdade são letras e números aleatórios):
+   =======================================
+
+   Public Key:
+   BExemploExemploExemplo...(uma linha comprida)
+
+   Private Key:
+   ExemploExemplo...(uma linha mais curta)
+
+   =======================================
+
+5. Copie cada chave para o bloco de notas:
+   - a linha embaixo de "Public Key:" ..... marque como PÚBLICA
+   - a linha embaixo de "Private Key:" .... marque como SEGREDO
+   Copie só a chave (sem o "Public Key:" e sem espaços).
+   No terminal do VS Code: selecione com o mouse e aperte Ctrl+C (ou botão direito > Copy).
+
+
+PARTE 2 - ONDE CADA UMA VAI
+---------------------------
+No .env.local (computador) e na Vercel (site), com estes nomes:
+  Public Key ........................ VITE_VAPID_PUBLIC_KEY
+  Private Key ....................... VAPID_PRIVATE_KEY      (NUNCA com VITE_ na frente)
+  Seu e-mail com mailto: na frente .. VAPID_SUBJECT          (ex.: mailto:seu-email@exemplo.com)
+  Secret key do Supabase ............ SUPABASE_SERVICE_ROLE_KEY   (passo 04, item C)
+
+Exemplo de como fica no .env.local (com as SUAS chaves no lugar):
+  VITE_VAPID_PUBLIC_KEY=BExemplo...
+  VAPID_PRIVATE_KEY=Exemplo...
+  VAPID_SUBJECT=mailto:seu-email@exemplo.com
+  SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
+
+Regras importantes
+  - Use o MESMO par no .env.local e na Vercel.
+  - Não gere outro par sem necessidade: com um par novo, todo mundo precisa ligar os avisos de novo.
+  - Se a Private Key vazar: gere outro par, troque nos dois lugares, publique de novo (passo 10,
+    Parte 5) e peça para as pessoas ligarem os avisos de novo.
+
+
+PARTE 3 - LIGAR E TESTAR (depois de publicar, passo 10)
+-------------------------------------------------------
+1. Confira o servidor: abra  https://SEU-ENDERECO/api/push
+   O que deve aparecer:  {"servico":"avisos da Kleo","configurado":true}
+
+2. No celular, abra a Kleo pelo endereço oficial.
+   - Android: pelo Chrome (ou pelo app instalado).
+   - iPhone: SÓ funciona com a Kleo instalada na tela de início (passo 11) e aberta pelo ícone.
+
+3. Em Pessoas, crie o seu perfil (se ainda não criou).
+
+4. Vá em Ajustes > Conversas > "Avisos com o app fechado" e toque em "Ligar avisos".
+   (Na tela Pessoas também aparece um cartão com o botão "Ligar avisos".)
+
+5. O celular pergunta se a Kleo pode mostrar notificações. Toque em "Permitir".
+   O que aparece: "Avisos ligados".
+
+6. Toque em "Enviar um aviso de teste".
+   O que aparece em poucos segundos: a notificação "Pronto! Os avisos com o app fechado estão
+   funcionando neste aparelho."
+
+7. Teste de verdade, com duas pessoas:
+   - Feche a Kleo no celular (pode bloquear a tela).
+   - No computador (outra pessoa), mande uma mensagem para esse perfil.
+   - O celular avisa com o nome de quem mandou e o começo da mensagem.
+   - Um pedido de ajuda chega como "PEDIDO DE AJUDA", vibrando forte.
+
+Cada aparelho liga os avisos separadamente (cada um toca em "Ligar avisos").
+
+
+SE DER ERRADO
+-------------
+"Os avisos com o app fechado ainda não foram configurados neste site."
+  O site foi publicado sem a VITE_VAPID_PUBLIC_KEY. Cadastre na Vercel e publique de novo
+  (as variáveis com VITE_ entram no app na hora de publicar). No computador: confira o
+  .env.local e rode o npm run dev de novo.
+
+Ao tocar em "Ligar avisos": "...não estão configurados no servidor. Confira: ..."
+  A mensagem lista o que falta (por exemplo VAPID_PRIVATE_KEY ou SUPABASE_SERVICE_ROLE_KEY).
+  Cadastre exatamente esses nomes na Vercel e publique de novo.
+
+/api/push mostra "configurado":false
+  Falta uma das variáveis da Parte 2, ou alguma está errada. Os erros mais comuns:
+  - VAPID_SUBJECT sem o mailto: na frente;
+  - chave copiada pela metade (copie a linha inteira de novo);
+  - espaço ou aspas sobrando no valor.
+
+"configurado":true, mas o aviso de teste não chega
+  A Public Key e a Private Key precisam ser do MESMO par. Gere um par novo (Parte 1), troque as
+  duas no .env.local e na Vercel, publique de novo e, no celular, toque em "Desligar avisos" e
+  depois ligue de novo.
+
+"Os avisos só funcionam em site seguro (endereço com https)."
+  Abra pelo endereço da Vercel (https). Pelo IP do computador (http) não funciona.
+
+"No iPhone, os avisos só chegam com a Kleo instalada na tela de início."
+  Instale pelo Safari (passo 11, Parte 1), abra pelo ícone e ligue os avisos lá dentro.
+  Precisa do iOS 16.4 ou mais novo.
+
+"As notificações estão bloqueadas..."
+  - Android: Configurações do celular > Apps > Chrome (ou Kleo) > Notificações > ligar.
+  - Computador: clique no cadeado ao lado do endereço > Notificações > Permitir.
+  Depois toque em "Já liberei, conferir".
+
+"Sua sessão nas Conversas expirou."
+  Abra a tela Pessoas, espere carregar e tente ligar os avisos de novo.
+
+O teste chega, mas os avisos de mensagem atrasam
+  A economia de bateria do Android pode segurar as notificações. Em Configurações > Apps >
+  Chrome (ou Kleo) > Bateria, escolha "Sem restrições".
+
+Próximo: 10-PUBLICAR-NA-INTERNET-Vercel.txt

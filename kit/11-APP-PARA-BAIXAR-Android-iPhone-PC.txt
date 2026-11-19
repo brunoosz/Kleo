@@ -1,0 +1,115 @@
+PASSO 11 - APP PARA BAIXAR (ANDROID, IPHONE E COMPUTADOR)
+=========================================================
+
+Resumo
+------
+A Kleo é um "app da web instalável" (PWA): qualquer pessoa instala direto do navegador, sem loja,
+em poucos toques (Parte 1). Para o Android também dá para gerar um arquivo APK (Parte 2).
+Os dois jeitos abrem o MESMO site publicado: quando você publica uma versão nova (passo 10),
+o app instalado atualiza sozinho.
+
+Antes de começar: publique o site (passo 10) e tenha o ENDEREÇO OFICIAL (o curto, do "Domains").
+
+Quer o app de verdade para instalar (o .exe do Windows e o .apk do Android, já prontos na
+pasta release/)? Veja o 14-INSTALADORES-PC-ANDROID-IPHONE.txt. A Parte 2 abaixo (PWABuilder)
+é um jeito alternativo de ter um APK sem instalar nada no computador.
+
+
+PARTE 1 - INSTALAR PELO NAVEGADOR (recomendado para todo mundo)
+---------------------------------------------------------------
+Android (Chrome, Edge ou Samsung Internet)
+1. Abra o endereço oficial no celular.
+2. Na tela inicial da Kleo aparece o cartão "Instale a Kleo no celular"
+   (no modo simples: "Coloque a Kleo na tela do celular").
+   Toque em "Instalar" (no modo simples: "Instalar agora") e confirme em "Instalar".
+   Se o cartão não aparecer: toque nos três pontinhos do navegador > "Instalar app"
+   (em alguns celulares: "Adicionar à tela inicial") > "Instalar".
+3. O ícone da Kleo aparece junto com os outros apps. Abra por ele.
+
+iPhone (Safari)
+1. Abra o endereço oficial no Safari.
+2. Toque em Compartilhar (o quadrado com a seta para cima). No iOS mais novo, ele fica no botão
+   de três pontinhos (...).
+3. Toque em "Adicionar à Tela de Início" (role a lista se não aparecer) e depois em "Adicionar".
+4. Abra a Kleo pelo ícone novo.
+   IMPORTANTE: no iPhone, os avisos com o app fechado só funcionam com a Kleo instalada assim
+   (iOS 16.4 ou mais novo). Ligue os avisos DENTRO do app instalado (passo 09, Parte 3).
+
+Computador (Chrome ou Edge)
+1. Abra o endereço oficial.
+2. Clique em "Instalar" no cartão da tela inicial da Kleo, ou no ícone de instalar no fim da
+   barra de endereço (um monitor com uma seta), e confirme em "Instalar".
+3. A Kleo abre numa janela própria e ganha atalho no menu Iniciar.
+
+
+PARTE 2 - APK PARA ANDROID (PWABuilder, grátis)
+-----------------------------------------------
+O APK é um arquivo de instalação do Android que você manda por link (Google Drive).
+1. No computador, abra:  https://www.pwabuilder.com
+
+2. No campo de endereço, cole o ENDEREÇO OFICIAL da Kleo (https://....vercel.app) e clique em
+   "Start".
+   O que aparece: uma análise do app (manifesto, service worker e ícones).
+   Avisos em amarelo são normais. A Kleo já tem manifesto, ícones e service worker.
+
+3. Clique em "Package For Stores" (canto de cima, à direita).
+
+4. No quadro "Android", clique em "Generate Package".
+
+5. Na janela que abre, na aba "Google Play" (a que já vem aberta):
+   - Package ID: deixe o que veio (algo parecido com app.vercel.kleo_app.twa). Anote.
+   - App name: Kleo
+   - Short name: Kleo
+   - Signing key: deixe "New" (cria uma assinatura nova para o app).
+   - Se pedir dados da assinatura (nome, organização, país), preencha com os seus.
+   - Clique em "Download Package".
+
+6. Baixa um arquivo .zip. No Windows: botão direito no .zip > "Extrair tudo..." > "Extrair".
+
+7. Dentro da pasta extraída:
+   - um arquivo .apk ............ o app para instalar no Android (é este que você compartilha)
+   - um arquivo .aab ............ só serve para a Play Store (não use agora)
+   - assetlinks.json ............ tira a barra de endereço de dentro do app (item 8)
+   - signing.keystore e signing-key-info.txt ... a ASSINATURA do app. São SEGREDO:
+     guarde numa pasta segura, FORA da pasta kleo-app, e nunca no GitHub.
+     Sem eles não dá para gerar uma versão nova do APK com a mesma assinatura.
+   Não veio arquivo .apk? Volte ao item 4 e, na janela, escolha a aba "Other Android":
+   ela gera o .apk.
+
+8. Tirar a barra de endereço de dentro do app:
+   a) No VS Code, clique com o botão direito na pasta public > "New Folder..." >
+      digite  .well-known  (com o ponto na frente) > Enter.
+   b) Copie o assetlinks.json da pasta extraída para dentro dela. Fica assim:
+      kleo-app/public/.well-known/assetlinks.json
+   c) Publique de novo:  npx vercel --prod
+   d) Confira: abra  https://SEU-ENDERECO/.well-known/assetlinks.json
+      O que aparece: um texto com o seu Package ID e "sha256_cert_fingerprints".
+   e) Se um dia gerar o APK de novo com OUTRA assinatura, troque também o assetlinks.json.
+
+9. Instalar e testar num Android:
+   a) Mande o .apk para o celular (Google Drive, cabo USB ou WhatsApp para você mesmo).
+   b) No celular, toque no arquivo .apk.
+   c) Se o Android avisar que não pode instalar apps desta fonte: toque em "Configurações",
+      ligue "Permitir desta fonte" e volte.
+   d) Toque em "Instalar". Se o Play Protect avisar que o app é desconhecido, toque em
+      "Mais detalhes" > "Instalar mesmo assim".
+   e) Abra a Kleo. Na primeira vez pode aparecer um aviso pequeno do Chrome embaixo: é normal.
+   O APK usa o Chrome do celular por baixo (quase todo Android já tem).
+   A barra de endereço continua aparecendo em cima? Confira o item 8 (o assetlinks.json precisa
+   estar publicado), espere alguns minutos, desinstale e instale o APK de novo.
+
+10. Compartilhar o APK:
+   a) Envie o .apk para o Google Drive (drive.google.com > "Novo" > "Upload de arquivo").
+   b) Botão direito no arquivo > "Compartilhar" > "Compartilhar".
+   c) Em "Acesso geral", escolha "Qualquer pessoa com o link".
+   d) Clique em "Copiar link" e mande junto com o texto do 12-PARA-PROFESSORES-E-TESTADORES.txt.
+
+Quando gerar o APK de novo?
+  Só se mudar o endereço do site, o nome ou o ícone do app. Mudanças no app (passo 10, Parte 7)
+  chegam sozinhas, porque o APK abre o site publicado.
+
+E o iPhone?
+  O iPhone não instala APK. Para a App Store é preciso uma conta paga da Apple; por isso, no
+  iPhone, use a instalação pelo Safari (Parte 1). Funciona igual, inclusive os avisos.
+
+Próximo: 12-PARA-PROFESSORES-E-TESTADORES.txt (e o 14, para os instaladores .exe e .apk)

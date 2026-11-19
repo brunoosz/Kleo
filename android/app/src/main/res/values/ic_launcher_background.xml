@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#BDB7FA</color>
+    <!-- Cores da Kleo (visual v2 claro) -->
+    <color name="kleo_creme">#F7F4F2</color>
+    <color name="kleo_lavanda">#D8D1FF</color>
+    <color name="kleo_preto">#000000</color>
+</resources>

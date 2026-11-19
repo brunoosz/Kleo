@@ -1,0 +1,173 @@
+PASSO 8 - CHAVES DE IA (GEMINI E GROQ)
+======================================
+
+Para que serve
+--------------
+A Kleo usa uma IA para conversar, entender fotos e transformar áudio em texto.
+Com a chave guardada no SERVIDOR, qualquer pessoa que abrir o app já conversa com a Kleo,
+sem configurar nada. No app isso se chama "IA da Kleo".
+  - Gemini (Google): a principal. Faz tudo, inclusive fotos e câmera.
+  - Groq: opcional. Deixa as respostas de texto mais rápidas e serve de reserva.
+As duas são grátis e não pedem cartão.
+
+Por que a chave que você tem hoje não funciona
+----------------------------------------------
+A sua chave atual é do projeto 626379532810 do Google Cloud. Nesse projeto:
+  - a API do Gemini está DESLIGADA, e
+  - a chave tem uma "restrição de API" (ela só vale para outro serviço do Google).
+Por isso o app mostra "A API do Gemini está desligada no projeto dessa chave".
+Não precisa consertar esse projeto. Crie uma chave NOVA pelo Google AI Studio (Parte 1):
+ela já sai pronta para o Gemini. Depois, troque a chave antiga em todo lugar onde você colou
+(.env.local, Vercel e Painel do dono).
+
+
+PARTE 1 - CHAVE DO GEMINI (5 minutos)
+-------------------------------------
+1. No navegador do computador, abra:  https://aistudio.google.com/app/apikey
+
+2. Entre com a sua conta Google (a do Gmail serve).
+   Se aparecer uma tela de termos de uso, marque a caixa de concordar e confirme.
+   O que aparece: a página "API Keys" (Chaves de API) do Google AI Studio.
+
+3. Se a lista já mostrar uma chave de um projeto que NÃO é o 626379532810,
+   pode usar essa: vá direto para o item 6.
+
+4. Clique no botão "Create API key" (em português: "Criar chave de API").
+   O que aparece: a janela "Create a new key" (Criar uma chave).
+
+5. Na janela:
+   a) Em "Name your key" (nome da chave), escreva:  kleo
+   b) Em "Choose an imported project" (escolher o projeto), abra a lista e clique em
+      "Create project" (Criar projeto). Dê o nome  kleo-ia  e confirme.
+      NÃO escolha o projeto 626379532810 (é o que está com a API desligada).
+      Se a lista mostrar um projeto chamado "Default Gemini Project", pode escolher ele.
+   c) Clique em "Create key" (Criar chave).
+   O que aparece: a chave nova na lista, com o nome kleo.
+
+6. Copie a chave: clique no ícone de copiar (dois quadradinhos) ao lado dela.
+   Se não houver o ícone, clique na chave e depois em "Copy" (Copiar).
+   É um texto comprido, sem espaços, que normalmente começa com AIza.
+   Cole no seu bloco de notas e marque como SEGREDO.
+
+7. Se aparecer "Set up billing" (configurar faturamento) ou um pedido de cartão: NÃO precisa.
+   O plano grátis ("Free") funciona sem cartão. Feche essa tela.
+
+
+PARTE 2 - CHAVE DO GROQ (opcional, 3 minutos)
+---------------------------------------------
+1. Abra:  https://console.groq.com/keys
+
+2. Entre com a conta Google, GitHub ou e-mail (botão "Sign in" ou "Log in").
+   O que aparece: a página "API Keys".
+
+3. Clique em "Create API Key".
+
+4. Em "Display Name" (nome), escreva  kleo  e clique em "Submit".
+
+5. A chave aparece UMA VEZ SÓ. Ela começa com gsk_.
+   Clique em "Copy", cole no bloco de notas como SEGREDO e depois clique em "Done".
+   Perdeu a chave? Apague a antiga (ícone de lixeira na lista) e crie outra. É rápido.
+
+
+PARTE 3 - ONDE COLOCAR AS CHAVES
+--------------------------------
+REGRA: TODAS as chaves do app (IA, voz, mapa do Google e qualquer outra) ficam no Painel do
+dono. Só o dono vê e mexe. Nenhum usuário vê, digita ou guarda chave no aparelho.
+Serviços aceitos no Painel do dono:
+  - IA ........ Google Gemini, Groq, OpenAI, OpenRouter
+  - Voz ....... ElevenLabs (vozes naturais)
+  - Mapa ...... Google Maps (Map Tiles API, pago e opcional)
+  - Outros .... chave de um serviço futuro (use o apelido para dizer qual é)
+
+Jeito A (o principal): Painel do dono, dentro do app
+  As chaves ficam no cofre do banco (Supabase) e só o servidor do app lê. Ninguém precisa
+  mexer em arquivo nem publicar de novo para trocar uma chave.
+  1. Faça o passo 13 (ligar e-mail, criar a sua conta e virar o dono).
+  2. No app: Ajustes > Painel do dono > "Adicionar chave" > Google Gemini > cole a chave >
+     "Guardar no cofre". Repita para o Groq (e, se quiser, ElevenLabs e Google Maps).
+  3. Toque em "Testar" em cada chave. O que aparece: "Funcionou (xxx ms)".
+  Pode guardar mais de uma chave por serviço: quando a cota de uma acaba, a próxima entra.
+
+Jeito B (SÓ reserva): arquivo .env.local e Vercel
+  O servidor usa estas se o cofre estiver vazio ou se todas as chaves de um serviço falharem.
+  Nomes aceitos: GEMINI_API_KEY, GROQ_API_KEY, OPENAI_API_KEY, OPENROUTER_API_KEY,
+  ELEVENLABS_API_KEY e GOOGLE_MAPS_API_KEY.
+  No computador (para testar):
+  1. Abra o arquivo .env.local da pasta kleo-app no VS Code.
+     (Ainda não tem? O passo 05 ensina a criar, usando o modelo-env-local.txt.)
+  2. Preencha estas duas linhas, sem aspas e sem espaços:
+       GEMINI_API_KEY=cole-aqui-a-chave-do-gemini
+       GROQ_API_KEY=cole-aqui-a-chave-do-groq
+     Se não fez a Parte 2, deixe GROQ_API_KEY= vazio.
+     ATENÇÃO: sem VITE_ na frente. Com VITE_, a chave iria para o navegador de todo mundo.
+  3. Salve com Ctrl+S.
+  4. No terminal onde o npm run dev está rodando: aperte Ctrl+C, digite  npm run dev  e Enter.
+  Na internet (site publicado):
+  5. Cadastre GEMINI_API_KEY e GROQ_API_KEY na Vercel e publique de novo (passo 10, Partes 4 e 5).
+
+Não existe mais "chave própria no aparelho": nenhuma chave fica no celular de ninguém.
+
+
+PARTE 4 - CONFERIR SE DEU CERTO
+-------------------------------
+No computador, com o npm run dev rodando:
+1. No navegador, abra o endereço que o terminal mostrou (por exemplo http://localhost:5173)
+   e acrescente no fim:  /api/ia?verificar=1
+   Exemplo:  http://localhost:5173/api/ia?verificar=1
+
+2. O que deve aparecer (um texto parecido com este):
+   {"ok":true,"chat":true,"visao":true,"transcricao":true,"provedores":["groq","gemini"],
+   "verificacao":{"gemini":{"ok":true},"groq":{"ok":true}}}
+   O importante: "ok":true no começo e "gemini":{"ok":true}.
+   Se você não fez a Parte 2, aparece só o gemini. Tudo bem.
+
+3. No app: Ajustes > Inteligência artificial.
+   O que deve aparecer: um quadro verde-limão "IA da Kleo: ligada".
+   Toque em "Testar": aparece o tempo da resposta (por exemplo 850 ms).
+
+4. No chat da Kleo, escreva "Oi". Ela responde.
+
+No site publicado, faça a mesma conferência com o endereço da Vercel (passo 10, Parte 6).
+
+
+SE DER ERRADO
+-------------
+"ok":false no /api/ia?verificar=1
+  O servidor não achou chave nenhuma (nem no Painel do dono, nem no .env.local). Confira:
+  - Ajustes > Painel do dono: a chave está na lista e ligada? Toque em "Testar".
+  - O servidor lê o cofre com a SUPABASE_SERVICE_ROLE_KEY (passo 05): ela está preenchida?
+  Se estiver usando só a reserva do .env.local:
+  - O nome é exatamente GEMINI_API_KEY (sem VITE_ e sem espaço antes ou depois do =).
+  - O arquivo se chama .env.local (não .env.local.txt) e está dentro da pasta kleo-app.
+  - Você parou (Ctrl+C) e rodou de novo o npm run dev depois de salvar.
+  - Na Vercel: a variável está cadastrada e você publicou DE NOVO depois de cadastrar.
+
+"gemini":{"ok":false,"codigo":"API_KEY_INVALID", ...}
+  A chave foi copiada errada ou pela metade. Copie de novo no AI Studio (Parte 1, item 6).
+
+"gemini":{"ok":false,"codigo":"SERVICE_DISABLED", ...} ou "API_KEY_SERVICE_BLOCKED"
+  Essa chave é de um projeto com a API do Gemini desligada ou com restrição (como a antiga).
+  Crie a chave nova pelo AI Studio, num projeto novo (Parte 1, item 5).
+
+No app: "A API do Gemini está desligada no projeto dessa chave"
+  Você ainda está usando a chave antiga. Troque pela nova (Parte 3).
+  No Painel do dono, toque no ícone de lixeira dessa chave e confirme em "Remover"; depois
+  adicione a nova.
+
+No app: "A IA grátis da Kleo está muito usada agora"
+  O plano grátis tem limite por minuto e por dia. Espere 1 minuto e tente de novo.
+  Ter as duas chaves (Gemini e Groq) divide o uso e quase acaba com esse aviso.
+
+No app: "IA da Kleo: indisponível neste endereço"
+  O app não achou a IA do servidor. Acontece quando não há chave no Painel do dono nem no
+  .env.local (no computador) ou na Vercel (no site). Confira com o /api/ia?verificar=1 (Parte 4).
+
+Cuidados
+--------
+- Nunca coloque as chaves no GitHub, em print ou em mensagem.
+- No plano grátis, o Google pode usar o que é enviado ao Gemini para melhorar os produtos dele.
+  Nos testes, evite dados pessoais sensíveis (documentos, senhas, exames).
+- Se uma chave vazar: apague no site onde criou (AI Studio ou Groq), crie outra e troque
+  no Painel do dono (e no .env.local e na Vercel, se usou a reserva).
+
+Próximo: 09-CHAVES-DOS-AVISOS-VAPID.txt

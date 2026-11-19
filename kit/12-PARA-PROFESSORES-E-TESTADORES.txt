@@ -1,0 +1,58 @@
+PASSO 12 - TEXTO PARA PROFESSORES E TESTADORES
+==============================================
+
+Como usar
+---------
+1. Copie um dos textos abaixo (entre as linhas tracejadas).
+2. Troque o que está entre [colchetes]:
+   [ENDEREÇO OFICIAL] ... o endereço curto da Vercel (passo 10, Parte 3)
+   [LINK DO APK] ........ o link do Google Drive (passo 11, Parte 2, item 10).
+                          Sem APK? Apague a linha do APK.
+   [SEU @] .............. o seu @ na tela Pessoas da Kleo
+   [SEU CONTATO] ........ seu e-mail ou WhatsApp
+3. Mande por WhatsApp, e-mail ou Teams.
+Os textos não usam emojis de propósito: ficam mais claros para quem usa leitor de tela.
+
+Se as Conversas NÃO estiverem ligadas no site (sem a Parte A do kit), troque o item 4 por:
+"4. Em Pessoas, toque em Experimentar agora e veja a conversa de demonstração."
+
+
+TEXTO COMPLETO (e-mail ou Teams)
+--------------------------------------------------------------------------------
+Olá! Esta é a Kleo, uma assistente pessoal para idosos, pessoas com deficiência e qualquer
+pessoa: mais autonomia, mais liberdade. É o meu projeto da FIAP (Global Solution 2026,
+CitizenTech).
+
+Abrir: [ENDEREÇO OFICIAL]
+Funciona no navegador do celular ou do computador. Não precisa de cadastro nem de senha.
+
+Para instalar como app:
+- Android: na tela inicial da Kleo, toque em Instalar.
+- iPhone: no Safari, toque em Compartilhar e depois em Adicionar à Tela de Início.
+- Android, se preferir o APK: [LINK DO APK]
+  (ao instalar, permita instalar desta fonte).
+
+O que experimentar (uns 5 minutos):
+1. Toque em Falar com a Kleo e peça: "me lembra do remédio às 8h todo dia".
+2. Pergunte: "qual a farmácia mais perto?" (permita a localização quando o celular pedir).
+3. Abra o Mapa e busque um lugar.
+4. Em Pessoas, crie seu perfil e me adicione pelo @[SEU @] para trocar mensagens e áudios comigo.
+5. Toque em SOS para ver o pedido de ajuda. Ele espera 5 segundos e dá para cancelar;
+   a Kleo não liga para ninguém sozinha. Atenção: os botões 192, 193 e 190 ligam de verdade.
+6. Em Ajustes, experimente o modo simples, as letras grandes e o modo escuro.
+
+Privacidade: perfil, agenda e lembretes ficam só no seu aparelho. As mensagens entre pessoas
+passam por um servidor e a IA responde pela internet. Nos testes, não use dados sensíveis.
+
+Sugestões e problemas: [SEU CONTATO]. Muito obrigado!
+--------------------------------------------------------------------------------
+
+
+TEXTO CURTO (WhatsApp)
+--------------------------------------------------------------------------------
+Oi! Esta é a Kleo, a assistente que fiz para o meu projeto da FIAP.
+Abra no celular: [ENDEREÇO OFICIAL]
+Toque em Falar com a Kleo e peça um lembrete, um caminho no mapa ou uma ajuda.
+Para instalar: no Android, toque em Instalar; no iPhone, Safari > Compartilhar > Adicionar à
+Tela de Início. Me conta o que achou?
+--------------------------------------------------------------------------------

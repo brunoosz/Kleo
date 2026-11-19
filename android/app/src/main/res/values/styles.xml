@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Tema base do app: sempre claro (a Kleo tem visual claro creme, mesmo com o celular no modo escuro) -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/kleo_preto</item>
+        <item name="colorPrimaryDark">@color/kleo_creme</item>
+        <item name="colorAccent">@color/kleo_lavanda</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">@null</item>
+        <!-- Fundo atrás das barras do sistema: o mesmo creme do app, com ícones escuros -->
+        <item name="android:windowBackground">@color/kleo_creme</item>
+        <item name="android:statusBarColor">@color/kleo_creme</item>
+        <item name="android:navigationBarColor">@color/kleo_creme</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+    </style>
+
+    <!-- Abertura: ícone da Kleo sobre o creme (Android 12+ usa a API nova; antes, a imagem splash) -->
+    <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+        <item name="android:background">@drawable/splash</item>
+        <item name="windowSplashScreenBackground">@color/kleo_creme</item>
+        <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
+    </style>
+</resources>

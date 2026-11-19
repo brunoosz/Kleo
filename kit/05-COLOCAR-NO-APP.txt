@@ -1,0 +1,53 @@
+PASSO 5 - COLOCAR NO APP
+========================
+
+Arquivo .env.local
+------------------
+Vale para o PC e para o celular que abrem o app pelo seu computador.
+
+1. Abra a pasta kleo-app no VS Code (menu File > Open Folder... > escolha kleo-app).
+
+2. Na barra da esquerda (Explorer), passe o mouse sobre o nome da pasta KLEO-APP e clique no
+   botão "New File..." (ícone de folha com o sinal de +).
+
+3. Digite o nome EXATO:  .env.local
+   - Começa com ponto.
+   - Não tem .txt no final.
+   Aperte Enter. O arquivo novo abre vazio.
+
+4. Abra o modelo-env-local.txt desta pasta, copie tudo (Ctrl+A, Ctrl+C)
+   e cole no .env.local (Ctrl+V).
+
+5. Preencha depois do sinal de = (sem aspas e sem espaços):
+   VITE_SUPABASE_URL=           cole a Project URL
+   VITE_SUPABASE_ANON_KEY=      cole a Publishable key
+   SUPABASE_SERVICE_ROLE_KEY=   cole a Secret key (avisos com o app fechado e o cofre do dono)
+   As outras linhas você preenche nos passos 08 (IA, como reserva) e 09 (avisos).
+   Vazias não atrapalham. As chaves de IA e de voz entram de verdade pelo Painel do dono,
+   dentro do app (passo 13): o .env.local é só a reserva.
+
+6. Salve com Ctrl+S.
+   Confira: no Explorer aparece ".env.local" com o nome em cinza. É normal: quer dizer que
+   esse arquivo não vai para o GitHub.
+
+7. Reinicie o app:
+   - No terminal do VS Code onde o "npm run dev" está rodando, aperte Ctrl+C.
+   - Digite  npm run dev  e aperte Enter.
+   - Para testar no celular, use  npm run celular  no lugar.
+
+8. Abra o app no navegador e vá em Ajustes > Conversas.
+   O que deve aparecer: "Conversas ligadas".
+   Se aparecer "Modo demonstração", toque em "Sair da demonstração".
+   Se aparecer "Indisponível no momento", confira o .env.local e reinicie o app.
+
+Não existe mais campo para colar a URL e a chave dentro do app: a configuração vem
+SOMENTE do .env.local (no seu computador) e das variáveis da Vercel (site publicado).
+Só VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY vão para o app; a Secret key fica só no servidor.
+
+Na Vercel (site publicado)
+--------------------------
+As mesmas variáveis do .env.local vão para a Vercel, em Settings > Environment Variables.
+Depois de cadastrar, é preciso publicar de novo. O passo a passo completo está no passo 10
+(Partes 4 e 5).
+
+Próximo: 06-TESTAR-COM-DUAS-PESSOAS.txt

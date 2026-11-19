@@ -1,0 +1,142 @@
+PASSO 15 - PUBLICAR AGORA: SUPABASE, VERCEL, APPS E CHAVES (LISTA ÚNICA)
+=========================================================================
+
+Para que serve
+--------------
+Este é o roteiro curto para colocar a versão atual da Kleo no ar, na ordem certa.
+Faça de cima para baixo. Os outros arquivos do kit têm os detalhes de cada parte; quando
+precisar, o número do arquivo aparece entre colchetes, por exemplo [10].
+
+Como fica no final
+------------------
+  App (.exe / .apk / site)  --pede-->  Servidor na Vercel  --lê as chaves-->  Cofre no Supabase
+- Nenhuma chave de IA, voz ou mapa fica dentro do app.
+- Você troca as chaves pelo próprio app (Ajustes > Painel do dono) e vale para todo mundo
+  em até 15 segundos, sem atualizar o app e sem abrir a Vercel.
+- A única coisa gravada dentro do .exe/.apk é o ENDEREÇO da Vercel. Por isso ele precisa
+  ser o definitivo antes de gerar os apps (Parte 3).
+
+
+PARTE 1 - SUPABASE: ATUALIZAR O BANCO (5 minutos)
+-------------------------------------------------
+Precisa fazer de novo agora, porque o banco ganhou novidades (pedidos de amizade, aviso de
+cota da voz e a opção "Voz do aparelho" do dono). Não apaga nada do que já existe.
+Quem já tinha conversa entre si vira amigo automaticamente; daqui para frente, só conversa
+quem aceitou o pedido de amizade.
+1. Abra  https://supabase.com/dashboard  e entre no projeto da Kleo.
+2. Menu da esquerda: "SQL Editor" > "New query".
+3. No VS Code, abra o arquivo  kit/supabase.sql  (é igual ao supabase/schema.sql),
+   aperte Ctrl+A e Ctrl+C.
+4. Volte ao Supabase, clique na área de texto, Ctrl+V, e clique em "Run".
+5. Se aparecer o aviso "destructive operation", clique em "Run this query".
+   O que aparece: "Success. No rows returned".
+   Deu erro? Copie a mensagem vermelha inteira e peça ajuda. [02] [07]
+
+Confira também (uma vez só, se ainda não fez):
+- Authentication > Sign In / Providers: "Allow anonymous sign-ins" LIGADO [03]
+  e "Email" LIGADO [13].
+- Você já é o dono? No app, Ajustes > Conta deve mostrar "Dono do app". Se não, faça a
+  Parte "virar dono" do [13].
+
+
+PARTE 2 - VERCEL: PUBLICAR O SITE E O SERVIDOR (15 minutos)
+-----------------------------------------------------------
+Primeira vez? Faça as Partes 1, 2 e 3 do [10] (criar conta, entrar pelo terminal e a
+primeira publicação). Depois volte aqui.
+
+1. Anote o ENDEREÇO OFICIAL: painel da Vercel > projeto kleo-app > "Domains".
+   Exemplo: kleo-app.vercel.app   Este é o endereço definitivo. Não renomeie e não apague
+   este projeto depois de gerar os apps.
+
+2. Settings > Environment Variables. Cadastre (nome EXATO, valor do seu .env.local):
+     VITE_SUPABASE_URL ............ obrigatória
+     VITE_SUPABASE_ANON_KEY ....... obrigatória
+     SUPABASE_SERVICE_ROLE_KEY .... obrigatória: é com ela que o servidor lê o cofre das chaves.
+                                    Fica só na Vercel. NUNCA coloque VITE_ na frente dela.
+     VITE_VAPID_PUBLIC_KEY ........ opcional (avisos com o app fechado) [09]
+     VAPID_PRIVATE_KEY ............ opcional, junto com a de cima [09]
+     VAPID_SUBJECT ................ opcional, junto com a de cima [09]
+   As chaves de IA, ElevenLabs e mapa NÃO precisam ir para a Vercel: elas ficam no
+   Painel do dono (Parte 4). Se quiser, GEMINI_API_KEY e GROQ_API_KEY servem só de reserva.
+
+3. Publique de novo (as variáveis só valem depois disso). No terminal do VS Code, na pasta
+   kleo-app:
+     npm run build        (tem que terminar com "built in ..." e sem "error")
+     npx vercel --prod
+   Espere a linha "Production: https://...".
+
+4. Confira no navegador (troque SEU-ENDERECO):
+   - https://SEU-ENDERECO/api/voz   deve mostrar "ok": true depois que a chave do ElevenLabs
+     estiver no Painel do dono (antes disso, "ok": false é normal).
+   - https://SEU-ENDERECO  abre a Kleo. Ajustes > Conversas: "Conversas ligadas".
+
+
+PARTE 3 - GERAR O .EXE E O .APK COM O ENDEREÇO CERTO (20 minutos)
+-----------------------------------------------------------------
+1. No VS Code, abra o arquivo  .env.local  (na pasta kleo-app) e preencha:
+     VITE_API_BASE=https://SEU-ENDERECO
+   Sem barra no fim. Exemplo: VITE_API_BASE=https://kleo-app.vercel.app
+   Sem isso, os apps abrem, mas ficam SEM IA e SEM voz.
+2. Salve o arquivo (Ctrl+S).
+3. No terminal:
+     npm run app:pc         -> gera release/Kleo-Setup-1.0.0.exe
+     npm run app:android    -> gera release/Kleo-1.0.0.apk
+   Detalhes, requisitos (Java, Android SDK) e o iPhone: [14]
+4. Instale no seu celular e no PC para testar antes de divulgar.
+
+
+PARTE 4 - COLOCAR AS CHAVES NO APP (5 minutos)
+----------------------------------------------
+1. Abra a Kleo (site, .exe ou .apk) e entre com a SUA conta de dono.
+2. Ajustes > Painel do dono > "Adicionar chave".
+3. Escolha o serviço (Gemini, Groq, ElevenLabs, Google Maps...), cole a chave e salve.
+4. Toque em "Testar" na chave. O que aparece: "Funcionou (xxx ms)".
+5. Dica para a apresentação: deixe DUAS ou mais chaves por serviço (outras contas grátis).
+   Quando a cota de uma acaba, o servidor passa sozinho para a próxima.
+Onde criar cada chave: [08] (Gemini e Groq) e [13] (lista completa).
+
+
+PARTE 5 - SUBIR PARA O GITHUB E CRIAR A RELEASE (10 minutos)
+-------------------------------------------------------------
+O botão "Baixar o app" (Ajustes > Sobre) abre  https://github.com/brunoosz/Kleo/releases .
+1. Mandar o código: no terminal, na pasta kleo-app:
+     git add -A
+     git commit -m "Kleo 1.0.0"
+     git push
+   (O .env.local e a pasta release/ não sobem: estão no .gitignore. Isso é o certo.)
+2. Criar a release:
+   a) Abra  https://github.com/brunoosz/Kleo/releases/new
+   b) "Choose a tag": escreva  v1.0.0  e clique em "Create new tag".
+   c) Título: Kleo 1.0.0
+   d) Arraste para a área "Attach binaries" os arquivos da pasta release/:
+      Kleo-Setup-1.0.0.exe  e  Kleo-1.0.0.apk
+   e) Clique em "Publish release".
+   Se já existir uma release antiga (2.1.0), pode apagar para não confundir:
+   abra a release > "Delete" (o ícone de lixeira).
+
+
+PARTE 6 - NO DIA A DIA E NO DIA DA APRESENTAÇÃO
+-----------------------------------------------
+Acabou a cota de uma chave?
+  Ajustes > Painel do dono > toque na chave > cole a nova em "Trocar a chave" > salve.
+  Ou adicione outra com "Adicionar chave". Vale para todos em até 15 segundos.
+  Não precisa abrir a Vercel, nem gerar o app de novo.
+
+Acabou a cota da voz do ElevenLabs?
+  O app avisa você na tela ("A cota da voz natural acabou").
+  Você pode: trocar/adicionar a chave do ElevenLabs no Painel do dono, OU ligar
+  Ajustes > Voz > "Voz do aparelho" (só o dono vê). Ligada, a voz do celular/navegador
+  entra no lugar só enquanto a cota estiver acabada, para todo mundo.
+
+Mudou o CÓDIGO do app?
+  Site: npm run build e  npx vercel --prod  (quem abre o site recebe na hora).
+  .exe/.apk: só precisa gerar de novo se você quiser as mudanças de tela nos apps.
+  Chaves e voz NUNCA precisam disso.
+
+
+QUANDO PRECISA MEXER EM CADA LUGAR (RESUMO)
+-------------------------------------------
+  Supabase (SQL Editor) .... só quando o arquivo supabase.sql mudar (como agora).
+  Vercel (variáveis) ....... uma vez só (Parte 2). Mudar variável = publicar de novo.
+  .exe / .apk .............. só quando mudar a tela/código ou o endereço da Vercel.
+  Painel do dono no app .... sempre que quiser trocar chaves. É o único lugar do dia a dia.

@@ -1,0 +1,143 @@
+PASSO 14 - INSTALADORES: COMPUTADOR (.exe), ANDROID (.apk) E IPHONE
+====================================================================
+
+Resumo
+------
+Além de instalar pelo navegador (passo 11), a Kleo tem apps de verdade:
+  - Computador (Windows): um instalador .exe (Electron).
+  - Android: um arquivo .apk (Capacitor).
+  - iPhone: um projeto para o Xcode (precisa de Mac e de conta Apple; veja a Parte 4).
+Os apps baixados abrem a Kleo que está dentro deles, e usam o SITE PUBLICADO (passo 10) para a
+IA, as vozes e os avisos. Por isso a variável VITE_API_BASE precisa estar preenchida com o
+endereço oficial antes de gerar (exemplo: VITE_API_BASE=https://kleo-app.vercel.app).
+
+Onde estão os arquivos prontos
+------------------------------
+Na pasta release/ dentro de kleo-app:
+  release/Kleo-Setup-1.0.0.exe ..... instalador do Windows
+  release/Kleo-1.0.0.apk ........... app do Android (assinado, para distribuir)
+  release/Kleo-1.0.0-teste.apk ..... app do Android de teste (sem assinatura final; serve para
+                                     instalar no seu celular e conferir)
+O número (1.0.0) é a versão do package.json. Quando mudar a versão, os nomes mudam junto.
+Esses arquivos NÃO vão para o GitHub (a pasta release/ é ignorada). Guarde uma cópia.
+
+
+PARTE 1 - COMPUTADOR (WINDOWS)
+------------------------------
+Gerar de novo:
+1. Confira o .env.local: VITE_API_BASE, VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY e
+   VITE_VAPID_PUBLIC_KEY preenchidas (as públicas; nenhum segredo entra no app).
+2. No terminal do VS Code:  npm run app:pc
+   Demora alguns minutos na primeira vez (baixa o Electron).
+   O que aparece no fim: "building ... Kleo-Setup-1.0.0.exe" e o arquivo em release/.
+   Para só testar sem gerar o instalador:  npm run app:pc:dev  (abre a janela usando o
+   npm run dev).
+
+Instalar:
+1. Dê dois cliques no Kleo-Setup-1.0.0.exe.
+2. O Windows mostra o aviso azul do SmartScreen ("O Windows protegeu o computador"), porque o
+   instalador não tem assinatura paga. Clique em "Mais informações" e depois em
+   "Executar assim mesmo".
+3. Siga o instalador (Avançar > Instalar > Concluir). A Kleo ganha atalho na área de trabalho
+   e no menu Iniciar.
+4. Abra a Kleo. Na primeira vez, o Windows pergunta sobre microfone, câmera e notificações:
+   permita.
+Para atualizar: gere o .exe novo e instale por cima. Os dados continuam.
+
+
+PARTE 2 - ANDROID (.apk)
+------------------------
+O que precisa no computador (uma vez só):
+  - JDK 21 (Java). O script procura em KLEO_JDK, JAVA_HOME ou na pasta ../ferramentas/jdk-21
+    (ao lado da pasta kleo-app).
+  - Android SDK (ANDROID_HOME ou ANDROID_SDK_ROOT). O jeito mais fácil é instalar o Android
+    Studio e abrir uma vez.
+  - Para o APK final (assinado): uma chave de assinatura, FORA do projeto. O script lê as
+    variáveis KLEO_KEYSTORE, KLEO_KEYSTORE_SENHA, KLEO_KEY_ALIAS e KLEO_KEY_SENHA, ou o arquivo
+    ../ferramentas/chaves/assinatura-android.properties. Sem ela, sai só o APK de teste.
+
+Gerar de novo:
+1. Confira o .env.local (as mesmas variáveis públicas da Parte 1; VITE_API_BASE é obrigatória,
+   senão o app do Android fica sem IA e sem avisos).
+2. No terminal:  npm run app:android
+   Só o de teste:  npm run app:android:teste
+   O que aparece no fim: os arquivos em release/ (Kleo-1.0.0.apk e Kleo-1.0.0-teste.apk).
+3. Mande o .apk para o celular (Google Drive, cabo USB ou WhatsApp para você mesmo).
+
+Instalar no celular:
+1. Toque no arquivo .apk.
+2. O Android avisa que não pode instalar apps de "fontes desconhecidas" desta origem. Toque em
+   "Configurações", ligue "Permitir desta fonte" (ou "Instalar apps desconhecidos") e volte.
+3. Toque em "Instalar". Se o Play Protect disser que o app é desconhecido: "Mais detalhes" >
+   "Instalar mesmo assim".
+4. Abra a Kleo e permita microfone, câmera, localização e notificações quando pedir.
+Para atualizar: instale o .apk novo por cima (precisa ser a MESMA assinatura; por isso guarde a
+chave de assinatura). O de teste e o final têm assinaturas diferentes: desinstale um antes de
+instalar o outro.
+
+Compartilhar: suba o Kleo-1.0.0.apk no Google Drive, "Compartilhar" > "Qualquer pessoa com o
+link" > "Copiar link" e mande junto com o texto do 12-PARA-PROFESSORES-E-TESTADORES.txt.
+
+
+PARTE 3 - GERAR NA NUVEM DO GITHUB (sem instalar Java nem Android Studio)
+--------------------------------------------------------------------------
+O arquivo .github/workflows/apps.yml gera o .exe e o .apk nos computadores do GitHub (grátis
+em repositório público).
+1. No GitHub, no repositório: Settings > Secrets and variables > Actions.
+   - Aba "Variables": VITE_API_BASE, VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY,
+     VITE_VAPID_PUBLIC_KEY (as públicas).
+   - Aba "Secrets" (só para o APK final): KLEO_KEYSTORE_BASE64, KLEO_KEYSTORE_SENHA,
+     KLEO_KEY_ALIAS, KLEO_KEY_SENHA.
+2. Actions > "Apps da Kleo" > "Run workflow". Ou crie uma tag v1.0.0 (git tag v1.0.0 e
+   git push --tags): além de gerar, publica uma Release com os arquivos para baixar.
+3. Quando terminar (uns 10 minutos), baixe os arquivos em "Artifacts" (ou na Release).
+
+
+PARTE 4 - IPHONE
+----------------
+O iPhone não instala arquivo nenhum fora da App Store. Para o app nativo da Kleo:
+  - precisa de um Mac com Xcode;
+  - precisa de uma conta de desenvolvedor da Apple (paga, cerca de US$ 99 por ano) para
+    distribuir para outras pessoas (TestFlight ou App Store). Com conta grátis, o app só
+    instala no SEU iPhone, ligado por cabo ao Mac, e para de funcionar em 7 dias.
+  - no Mac:  npm run app:ios  e depois  npx cap open ios  (abre o Xcode; escolha a sua equipe
+    em Signing e clique em Run com o iPhone conectado).
+  O apps.yml do GitHub também compila o projeto do iPhone, mas SEM assinatura: ainda é preciso
+  assinar no Xcode para instalar.
+
+Alternativa que funciona hoje, de graça: instalar pelo Safari (passo 11, Parte 1):
+  Compartilhar > "Adicionar à Tela de Início". A Kleo abre em tela cheia, com ícone, e os avisos
+  funcionam (iOS 16.4 ou mais novo, ligados dentro do app instalado).
+
+
+AVISOS COM O APP FECHADO
+------------------------
+Nos apps baixados (o .exe e o .apk) os avisos com o app FECHADO não funcionam: eles usam o
+sistema de avisos do navegador (Web Push), que não existe dentro do Electron nem do Capacitor.
+  - Com o app aberto, os avisos de mensagem e de pedido de ajuda aparecem normalmente.
+  - Quem precisa dos avisos com o app fechado deve instalar pelo navegador (passo 11), no
+    Android ou no iPhone.
+
+
+SE DER ERRADO
+-------------
+"VITE_API_BASE está vazia" ao gerar
+  Coloque no .env.local a linha VITE_API_BASE=https://SEU-ENDERECO (o oficial do passo 10) e
+  gere de novo. Sem ela o app abre, mas não conversa.
+
+O app abre e diz "IA da Kleo: indisponível"
+  O endereço de VITE_API_BASE está errado ou o site não foi publicado com as chaves. Abra
+  https://SEU-ENDERECO/api/ia?verificar=1 no navegador: tem que mostrar "ok":true.
+
+"JDK 21 não encontrado" ou "SDK do Android não encontrado"
+  Instale o JDK 21 e o Android Studio (Parte 2) ou gere na nuvem (Parte 3).
+
+O instalador do Windows não abre ou o antivírus apaga
+  É o SmartScreen/antivírus por falta de assinatura paga. Use "Mais informações > Executar
+  assim mesmo" ou libere o arquivo no antivírus. Ou instale pelo navegador (passo 11).
+
+O Android diz "App não instalado"
+  Já existe uma Kleo com outra assinatura (o de teste e o final). Desinstale a antiga e tente
+  de novo.
+
+Fim do kit. Para divulgar: 12-PARA-PROFESSORES-E-TESTADORES.txt

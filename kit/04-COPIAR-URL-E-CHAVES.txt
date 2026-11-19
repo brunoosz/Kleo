@@ -1,0 +1,47 @@
+PASSO 4 - COPIAR O ENDEREÇO (URL) E AS CHAVES
+=============================================
+
+Você vai copiar 3 coisas para o seu bloco de notas:
+  A) Project URL ............ PÚBLICA (vai para o app)
+  B) Publishable key ........ PÚBLICA (vai para o app)
+  C) Secret key ............. SEGREDO (só no servidor: .env.local e Vercel)
+
+Jeito mais rápido: botão "Connect"
+----------------------------------
+1. No topo da página do projeto, clique em "Connect".
+2. O que aparece: uma janela com exemplos de código. Procure:
+   - o endereço do projeto, no formato https://xxxxxxxxxxxxxxxxxxxx.supabase.co  = Project URL
+   - a chave que começa com sb_publishable_                                  = Publishable key
+3. Copie os dois para o bloco de notas.
+
+Pelo menu (se preferir, ou se não achar no Connect)
+---------------------------------------------------
+A) Project URL
+1. Clique em "Project Settings" (ícone de engrenagem, embaixo no menu da esquerda).
+2. Clique em "Data API".
+3. Copie o "Project URL" (botão "Copy" ao lado).
+   Formato: https://abcdefghijklmnopqrst.supabase.co
+
+B) Publishable key
+1. Ainda em "Project Settings", clique em "API Keys".
+2. Na parte "Publishable key", clique em "Copy".
+   Formato: sb_publishable_ seguido de letras e números.
+
+C) Secret key (só para os avisos com o app fechado, no servidor)
+1. Na mesma página "API Keys", na parte "Secret keys", clique no ícone de olho para revelar
+   a chave "default" e depois em "Copy".
+   Formato: sb_secret_ seguido de letras e números.
+2. Guarde no bloco de notas marcada como SEGREDO.
+
+Se só aparecerem as chaves antigas
+----------------------------------
+Na aba "Legacy API Keys" existem a "anon" (pública) e a "service_role" (segredo).
+Elas também funcionam: a anon no lugar da publishable e a service_role no lugar da secret.
+
+Onde cada uma vai
+-----------------
+Project URL      ->  VITE_SUPABASE_URL
+Publishable key  ->  VITE_SUPABASE_ANON_KEY
+Secret key       ->  SUPABASE_SERVICE_ROLE_KEY   (NUNCA com VITE_ na frente)
+
+Próximo: 05-COLOCAR-NO-APP.txt

@@ -1,0 +1,113 @@
+KLEO - KIT COMPLETO: CONVERSAS, IA, AVISOS, PUBLICAR E APP
+==========================================================
+
+O que é este kit
+----------------
+Passo a passo para deixar a Kleo pronta para a apresentação e para outras pessoas testarem:
+  - Conversas entre pessoas de verdade (Supabase)
+  - IA da Kleo funcionando para qualquer pessoa, sem configurar nada (Gemini e Groq)
+  - Contas com e-mail, convidado e o Painel do dono (onde as chaves ficam guardadas)
+  - Avisos com o app fechado (mensagens e pedidos de ajuda)
+  - Site publicado na internet, com https (Vercel)
+  - App para instalar no Android, no iPhone e no computador (pelo navegador ou .exe/.apk)
+Tudo grátis e sem cartão de crédito.
+
+Cada arquivo tem passos numerados, o nome exato dos botões, o que aparece depois e o que fazer
+se der errado. Faça um arquivo de cada vez, na ordem, e só passe para o próximo quando o
+"O que aparece" bater com a sua tela.
+
+JÁ FEZ O KIT ANTES E SÓ QUER PUBLICAR A VERSÃO NOVA?
+  Vá direto para  15-PUBLICAR-AGORA-PASSO-A-PASSO.txt  (lista única: Supabase, Vercel,
+  apps, chaves e GitHub, na ordem certa).
+
+Ordem dos arquivos
+------------------
+PARTE A - CONVERSAS ENTRE PESSOAS (Supabase) ................. uns 20 minutos
+  01-CRIAR-CONTA-E-PROJETO-SUPABASE.txt     Criar a conta e o projeto (região São Paulo).
+  02-RODAR-O-SQL.txt                        Preparar o banco com o arquivo supabase.sql.
+  03-LIGAR-LOGIN-ANONIMO.txt                Deixar as pessoas entrarem sem e-mail e senha.
+  04-COPIAR-URL-E-CHAVES.txt                Copiar o endereço e as chaves do projeto.
+  05-COLOCAR-NO-APP.txt                     Colocar o endereço e as chaves no arquivo .env.local.
+  06-TESTAR-COM-DUAS-PESSOAS.txt            Testar conversa, áudio e pedido de ajuda.
+  07-PROBLEMAS-E-SOLUCOES.txt               Se algo der errado no Supabase (e os limites grátis).
+
+PARTE B - IA DA KLEO .......................................... uns 10 minutos
+  08-CHAVES-DE-IA-Gemini-e-Groq.txt         Criar a chave do Gemini (e a do Groq, opcional).
+  (as chaves entram no app pelo Painel do dono, passo 13; o .env.local é a reserva)
+
+PARTE C - AVISOS COM O APP FECHADO ............................ uns 5 minutos
+  09-CHAVES-DOS-AVISOS-VAPID.txt            Gerar as chaves dos avisos (um comando no terminal).
+
+PARTE D - PUBLICAR ............................................ uns 20 minutos
+  10-PUBLICAR-NA-INTERNET-Vercel.txt        Colocar o site no ar e cadastrar as chaves na Vercel.
+
+PARTE E - APP E DIVULGAÇÃO .................................... uns 20 minutos
+  11-APP-PARA-BAIXAR-Android-iPhone-PC.txt  Instalar pelo navegador (PWA), em qualquer aparelho.
+  12-PARA-PROFESSORES-E-TESTADORES.txt      Texto pronto para mandar junto com o link ou o APK.
+
+PARTE F - CONTAS E PAINEL DO DONO ............................. uns 10 minutos
+  13-CONTAS-E-PAINEL-DO-DONO.txt            Ligar e-mail, criar sua conta, virar dono e guardar
+                                            as chaves no cofre do app (ninguém mais vê).
+
+PARTE G - INSTALADORES ........................................ uns 15 minutos
+  14-INSTALADORES-PC-ANDROID-IPHONE.txt     O .exe do Windows, o .apk do Android, o iPhone e
+                                            como gerar tudo de novo.
+
+Arquivos de apoio
+  modelo-env-local.txt   Modelo do arquivo .env.local com TODAS as variáveis (copie e preencha).
+  supabase.sql           O código do banco (igual ao supabase/schema.sql do projeto). Usado no 02.
+
+Caminho mais curto (se o tempo apertar)
+---------------------------------------
+Só o 08 (chave do Gemini) e o 10 (publicar) já deixam a Kleo conversando no endereço da Vercel.
+- Sem a Parte A, a tela Pessoas funciona no "modo demonstração" (contatos de mentira que
+  respondem sozinhos). Dá para apresentar assim.
+- Sem a Parte C, tudo funciona, mas os avisos de mensagens só chegam com o app aberto.
+Depois dá para fazer o resto, cadastrar as chaves novas e publicar de novo (passo 10, Parte 5).
+
+Onde as chaves ficam
+--------------------
+Chaves de IA e de voz (Gemini, Groq, ElevenLabs...): no PAINEL DO DONO, dentro do app
+(Ajustes > Painel do dono, passo 13). Elas ficam no cofre do banco e só o servidor lê.
+As mesmas chaves no .env.local e na Vercel são só RESERVA (o servidor usa se o cofre falhar).
+
+As outras (Supabase, avisos VAPID) vão em DOIS lugares, com os MESMOS nomes:
+  1. No arquivo .env.local, dentro da pasta kleo-app (para testar no seu computador).
+  2. Na Vercel, em Settings > Environment Variables (para o site publicado).
+O modelo-env-local.txt já tem todas as linhas prontas para preencher.
+
+Regra de ouro das chaves
+------------------------
+PÚBLICAS (podem ir para o app; o nome começa com VITE_):
+  VITE_SUPABASE_URL ........... endereço do projeto Supabase (https://....supabase.co)
+  VITE_SUPABASE_ANON_KEY ...... chave publishable do Supabase (sb_publishable_...)
+  VITE_VAPID_PUBLIC_KEY ....... chave pública dos avisos
+  VITE_API_BASE ............... endereço do site publicado (só para gerar o .exe e o .apk, passo 14)
+
+SEGREDOS (nunca no app, nunca no GitHub, nunca em print ou mensagem; NUNCA com VITE_ na frente):
+  GEMINI_API_KEY .............. chave do Gemini (Google AI Studio) - reserva do Painel do dono
+  GROQ_API_KEY ................ chave do Groq (começa com gsk_) - reserva do Painel do dono
+  ELEVENLABS_API_KEY, OPENAI_API_KEY, OPENROUTER_API_KEY ... reservas opcionais (vozes e IA)
+  SUPABASE_SERVICE_ROLE_KEY ... chave secreta do Supabase (sb_secret_...)
+  VAPID_PRIVATE_KEY ........... chave privada dos avisos
+  Também são segredo: a senha do banco do Supabase (Database Password) e os arquivos
+  signing.keystore e signing-key-info.txt do APK (passo 11).
+
+Não é segredo, mas os avisos precisam dele:
+  VAPID_SUBJECT ............... seu e-mail no formato mailto:seu-email@exemplo.com
+
+Opcional (quase nunca precisa):
+  KLEO_ORIGENS ................ outro site que possa usar a IA deste servidor (passo 10, no fim).
+
+Se uma chave secreta vazar: apague essa chave no site onde ela foi criada, crie outra, troque no
+.env.local e na Vercel e publique de novo (passo 10, Parte 5).
+Se alguém colar uma chave secreta do Supabase no app por engano, a Kleo recusa e avisa.
+As chaves do Painel do dono nunca saem do servidor: o próprio dono só vê os 4 últimos caracteres.
+
+Palavras que aparecem no kit
+----------------------------
+Terminal ......... a janela de comandos do VS Code (menu Terminal > New Terminal).
+.env.local ....... arquivo com as chaves, dentro da pasta kleo-app. Não vai para o GitHub.
+Variável ......... uma linha no formato NOME=valor (por exemplo GEMINI_API_KEY=...).
+Publicar ......... mandar a versão nova do app para a internet (na Vercel isso se chama deploy).
+Endereço oficial . o endereço curto do site na Vercel (passo 10, Parte 3). É ele que você divulga.

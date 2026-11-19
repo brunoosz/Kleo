@@ -1,0 +1,86 @@
+﻿TERMOS DE USO DA KLEO
+Versão 1.0 - novembro de 2026
+
+Leia com atenção. Ao instalar ou usar a Kleo, você concorda com estes termos.
+
+
+1. O QUE É A KLEO
+A Kleo é uma assistente pessoal para idosos, pessoas com deficiência e qualquer pessoa:
+conversa por voz, lembretes de remédios e rotinas, agenda, notas, mapa, conversas com a
+família e botão de emergência. Ela foi criada pela equipe Kheo como projeto acadêmico
+(FIAP - Global Solution, CitizenTech). O uso é gratuito e sem fins lucrativos.
+
+
+2. LICENÇA DE USO
+- Você pode instalar e usar a Kleo de graça, para uso pessoal, testes e avaliação acadêmica.
+- Não é permitido vender a Kleo, cobrar pelo uso ou distribuí-la modificada como se fosse
+  a original.
+- Os nomes Kleo e Kheo, o logotipo e os mascotes pertencem aos autores.
+
+
+3. EMERGÊNCIAS - IMPORTANTE
+A Kleo NÃO substitui os serviços de emergência.
+Em uma emergência, ligue direto:
+  192 - SAMU (saúde)
+  193 - Bombeiros
+  190 - Polícia
+O botão de emergência e os avisos para os contatos dependem do aparelho, da bateria, da
+internet, do sinal do celular e de serviços de terceiros, e podem atrasar ou falhar.
+Nunca dependa só da Kleo em situações de risco à vida ou à saúde.
+
+
+4. SAÚDE, REMÉDIOS E LEMBRETES
+- Os lembretes de remédios e rotinas ajudam a memória, mas não substituem a orientação de
+  médicos, farmacêuticos e outros profissionais de saúde. Siga sempre a receita e a bula.
+- As respostas da inteligência artificial podem conter erros. Não use a Kleo para
+  diagnóstico, tratamento ou decisões médicas.
+- Avisos e despertadores podem atrasar ou não aparecer se o aparelho estiver desligado,
+  sem bateria, em modo silencioso ou de economia de bateria, ou com as notificações
+  bloqueadas.
+
+
+5. PRIVACIDADE
+- Perfil, agenda, notas, rotinas e lembretes ficam guardados no próprio aparelho.
+- Conversas entre pessoas (quando ligadas): mensagens, áudios e fotos passam pelo serviço
+  Supabase, protegidos por regras de acesso. Só quem participa da conversa vê o conteúdo.
+- Inteligência artificial: o que você fala, digita ou mostra para a câmera da Kleo é
+  enviado a um provedor de IA (por exemplo Google Gemini ou Groq) só para gerar a resposta.
+  Evite enviar dados pessoais que não sejam necessários.
+- Localização: usada quando você abre o mapa ou pede ajuda. Ela só é enviada para os seus
+  contatos de emergência quando você aciona a emergência.
+- Microfone e câmera: usados só quando você fala com a Kleo, grava um áudio ou usa a câmera.
+- A Kleo não tem anúncios e não vende nem compartilha seus dados para publicidade.
+- Para apagar seus dados: use a opção de apagar tudo nos Ajustes da Kleo, ou desinstale o
+  app. No computador, os dados ficam na pasta %APPDATA%\Kleo até você apagar.
+
+
+6. SERVIÇOS DE TERCEIROS
+A Kleo usa serviços de outras empresas e projetos, como mapas (OpenStreetMap e outros),
+clima (Open-Meteo), IBGE, provedores de inteligência artificial, Supabase e Vercel. Cada um
+tem os próprios termos e pode ficar fora do ar ou mudar sem aviso.
+
+
+7. SEM GARANTIA
+A Kleo é um projeto acadêmico fornecido "como está", sem garantia de funcionamento
+contínuo, de ausência de erros ou de adequação a uma finalidade específica. Na medida
+permitida pela lei, os autores não se responsabilizam por danos causados pelo uso ou pela
+impossibilidade de uso do aplicativo.
+
+
+8. INSTALADOR SEM ASSINATURA DE LOJA
+O instalador do computador (.exe) e o aplicativo do Android (.apk) não são distribuídos por
+lojas e não têm certificado comercial. Por isso o Windows e o Android podem mostrar um
+aviso de segurança na instalação. Baixe a Kleo somente pelo link oficial do projeto.
+
+
+9. MUDANÇAS NESTES TERMOS
+Estes termos podem ser atualizados junto com novas versões da Kleo. A versão em vigor é a
+que acompanha o aplicativo instalado.
+
+
+10. CONTATO
+Equipe Kheo - projeto acadêmico FIAP. Dúvidas e sugestões pelo repositório oficial do
+projeto no GitHub.
+
+
+Ao continuar a instalação, você declara que leu e concorda com estes Termos de Uso.

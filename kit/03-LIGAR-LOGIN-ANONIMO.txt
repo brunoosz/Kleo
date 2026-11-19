@@ -1,0 +1,27 @@
+PASSO 3 - LIGAR O LOGIN ANÔNIMO
+===============================
+
+A Kleo cria uma conta para cada aparelho sem pedir e-mail nem senha (ideal para idosos).
+Para isso, o Supabase precisa permitir o "login anônimo".
+
+1. No painel do projeto, clique em "Authentication" no menu da esquerda.
+
+2. Clique em "Sign In / Providers".
+   O que aparece: as opções de cadastro, com uma parte chamada "User Signups".
+
+3. Ligue a chave "Allow anonymous sign-ins".
+   Deixe ligada também a chave "Allow new users to sign up".
+
+4. Clique em "Save changes".
+   O que aparece: um aviso de que as configurações foram salvas.
+
+Extra para o dia da apresentação
+--------------------------------
+O Supabase deixa criar só 30 contas anônimas por hora vindas da MESMA internet (mesmo Wi-Fi).
+Se vários professores forem testar juntos no Wi-Fi da faculdade:
+
+1. Clique em "Authentication" e depois em "Rate Limits".
+2. Procure o limite das contas anônimas ("anonymous users") e troque 30 por 300.
+3. Clique em "Save changes".
+
+Próximo: 04-COPIAR-URL-E-CHAVES.txt

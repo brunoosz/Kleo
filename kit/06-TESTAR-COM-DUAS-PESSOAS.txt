@@ -1,0 +1,60 @@
+PASSO 6 - TESTAR COM DUAS PESSOAS
+=================================
+
+Você precisa de dois aparelhos (ou dois navegadores diferentes no PC, por exemplo Chrome e Edge).
+Cada aparelho vira uma pessoa diferente.
+
+1. Aparelho A (PC): rode  npm run dev  e abra o endereço que aparecer no terminal.
+   Aparelho B (celular): no PC rode  npm run celular , abra no celular o endereço https que
+   aparecer no terminal e aceite o aviso de segurança ("Avançado" > "Continuar").
+   Ou use o endereço da Vercel nos dois.
+
+2. Nos dois aparelhos: toque em "Pessoas" na barra de baixo.
+   O que aparece: "Crie seu perfil para começar".
+
+3. Em cada um, escreva o nome. O @ é sugerido sozinho (pode trocar).
+   Espere aparecer "@... está livre" e toque em "Criar meu perfil".
+   O que aparece: o seu cartão com nome e @.
+   Use um @ diferente em cada aparelho.
+
+4. No aparelho A: toque em "Adicionar alguém pelo @", digite o @ (ou o nome) da pessoa B
+   e toque em "Adicionar".
+   Dê um apelido se quiser (por exemplo: Filha) e toque em "Começar a conversar".
+
+5. No aparelho A: escreva "Oi" e toque na seta para enviar.
+   O que aparece no A: a mensagem com um relógio e, logo depois, um tique.
+   O que aparece no B: um aviso no topo com som, e a conversa em "Pessoas" com 1 nova.
+
+6. No aparelho B: abra a conversa e responda.
+   O que aparece no A: a resposta, e na mensagem que ele mandou os dois tiques coloridos (lida).
+
+7. Áudio: toque no microfone vermelho, fale e toque na seta.
+   O outro aparelho recebe a mensagem de voz e pode tocar.
+   Com a IA ligada, aparece o botão "Ver em texto".
+
+8. Pedido de ajuda:
+   - No aparelho A: Pessoas > Emergência > "Adicionar contato de emergência".
+     Em "Escolher dos seus contatos da Kleo", toque na pessoa B e depois em "Salvar contato".
+   - Toque em "Pedir socorro" e espere os 5 segundos (ou toque em "Avisar agora").
+   - O que aparece no A: "Pedido de ajuda enviado" e "Avisado pelo app" ao lado da pessoa B.
+   - O que aparece no B: a tela vermelha "... pediu ajuda", com sirene e o botão
+     "Ver onde está e responder".
+
+9. Conferir no painel do Supabase:
+   - Table Editor > mensagens: as mensagens aparecem como linhas.
+   - Storage > audios: uma pasta por conversa, com os áudios.
+   - Authentication > Users: um usuário anônimo para cada aparelho.
+
+Teste sem internet
+------------------
+Desligue a internet do aparelho A e mande uma mensagem: ela fica com o relógio e aparece o aviso
+"Sem internet agora...". Ligue a internet de novo: ela sai sozinha. Pedido de ajuda sai primeiro.
+
+Avisos com o app fechado
+------------------------
+Para receber mensagens e pedidos de ajuda com o app FECHADO, faça os passos 09 (chaves dos
+avisos) e 10 (publicar na Vercel) e depois ligue em
+Ajustes > Conversas > "Avisos com o app fechado".
+
+Próximo: 08-CHAVES-DE-IA-Gemini-e-Groq.txt
+(Se algo deu errado nas Conversas, veja antes o 07-PROBLEMAS-E-SOLUCOES.txt.)

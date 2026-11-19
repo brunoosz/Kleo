@@ -1,0 +1,49 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Apps para baixar (gerados por npm run app:pc e npm run app:android)
+release/
+
+# Android e iPhone: arquivos de build e locais (o android/.gitignore e o ios/.gitignore cobrem o resto)
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+ios/App/build/
+ios/DerivedData/
+
+# Chaves de assinatura: NUNCA no Git (ficam em D:\Kheo\ferramentas\chaves, fora do projeto)
+chaves/
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+assinatura-android.properties
+
+# Pacotes gerados localmente
+*.zip
+.vercel
+
+.vercel

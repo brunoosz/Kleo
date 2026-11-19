@@ -1,0 +1,18 @@
+# Arquivos que NÃO sobem para a Vercel no "npx vercel --prod"
+# (a Vercel monta o app de novo a partir do código; segredos ficam em Settings > Environment Variables)
+kit/
+*.zip
+dist/
+node_modules/
+.vercel/
+.env
+.env.local
+.env.*.local
+
+# Apps para baixar e projetos nativos: não fazem parte do site
+/release/
+/android/
+/ios/
+/electron/
+/build/
+/scripts/

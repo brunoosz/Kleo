@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- APK de teste (debug): aparece como "Kleo Teste" para não confundir com o app final -->
+    <string name="app_name">Kleo Teste</string>
+    <string name="title_activity_main">Kleo Teste</string>
+</resources>

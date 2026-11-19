@@ -1,0 +1,60 @@
+# Modelo do arquivo .env.local da Kleo (TODAS as variáveis)
+# Como usar: copie TUDO para o arquivo .env.local (dentro da pasta kleo-app) e preencha depois do =.
+# Sem aspas e sem espaços. As linhas que começam com # são só explicação (o app ignora).
+# Pode deixar vazias as que ainda não tem.
+# Depois de salvar, pare o "npm run dev" (Ctrl+C) e rode de novo.
+# As MESMAS variáveis vão na Vercel: Settings > Environment Variables (passo 10, Parte 4).
+# O seu .env.local tem segredos: nunca mande para ninguém nem coloque no GitHub.
+
+# ======================= PÚBLICAS (o nome começa com VITE_) =======================
+
+# Conversas (Supabase) - passo 04
+# Project URL. Exemplo: https://abcdefghijklmnopqrst.supabase.co
+VITE_SUPABASE_URL=
+# Publishable key (começa com sb_publishable_). NUNCA a secret aqui.
+VITE_SUPABASE_ANON_KEY=
+
+# Avisos com o app fechado - passo 09
+# Public Key gerada com o comando: npx web-push generate-vapid-keys
+VITE_VAPID_PUBLIC_KEY=
+
+# Instaladores (.exe e .apk) - passo 14
+# Endereço oficial do site publicado, sem barra no fim. Exemplo: https://kleo-app.vercel.app
+# Os apps baixados usam esse endereço para a IA, as vozes e os avisos. No site não precisa.
+VITE_API_BASE=
+# Opcional: endereço mostrado em "Compartilhar o app" (vazio = usa VITE_API_BASE ou o endereço aberto)
+VITE_SITE_URL=
+
+# ============ SEGREDOS (só no servidor; NUNCA com VITE_ na frente do nome) ============
+
+# RESERVA do servidor - passos 08 e 13. TODAS as chaves (IA, voz, mapa) vão no Painel do dono;
+# estas só entram se o cofre estiver vazio ou se todas as chaves de um serviço falharem.
+# IA da Kleo
+# Chave do Google AI Studio (https://aistudio.google.com/app/apikey). Normalmente começa com AIza.
+GEMINI_API_KEY=
+# Opcional: chave do Groq (https://console.groq.com/keys). Começa com gsk_.
+GROQ_API_KEY=
+# Opcionais: outras IAs de reserva (pagas)
+OPENROUTER_API_KEY=
+OPENAI_API_KEY=
+# Opcional: voz natural (ElevenLabs, grátis até um limite). Começa com sk_.
+ELEVENLABS_API_KEY=
+# Opcional e PAGO: mapa do Google (Map Tiles API + faturamento). Começa com AIza. Sem restrição de site.
+GOOGLE_MAPS_API_KEY=
+
+# Avisos com o app fechado e cofre do Painel do dono - passos 04, 09 e 13
+# Secret key do Supabase (começa com sb_secret_)
+SUPABASE_SERVICE_ROLE_KEY=
+# Private Key gerada junto com a VITE_VAPID_PUBLIC_KEY (o mesmo par)
+VAPID_PRIVATE_KEY=
+# Seu e-mail com mailto: na frente. Exemplo: mailto:seu-email@exemplo.com
+VAPID_SUBJECT=
+
+# ======================= OPCIONAL (quase nunca precisa) =======================
+# Só se OUTRO site, de outro endereço, for chamar a IA deste servidor.
+# O endereço da Vercel e um domínio próprio do mesmo projeto já funcionam sem isto.
+# Para usar: tire o # da frente e escreva os endereços separados por vírgula.
+# KLEO_ORIGENS=https://outro-site.com.br
+# Vazias = o servidor usa as VITE_ de cima
+# SUPABASE_URL=
+# VAPID_PUBLIC_KEY=

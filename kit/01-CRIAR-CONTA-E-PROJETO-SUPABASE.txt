@@ -1,0 +1,42 @@
+PASSO 1 - CRIAR A CONTA E O PROJETO NO SUPABASE
+===============================================
+
+1. Abra o navegador e entre em: https://supabase.com
+   O que aparece: a página inicial do Supabase.
+
+2. Clique em "Start your project" (ou em "Sign in", se já tiver conta).
+   O que aparece: a tela de entrar.
+
+3. Clique em "Continue with GitHub" (mais fácil) ou crie a conta com e-mail e senha.
+   Se usar e-mail, confirme pelo link que chega na sua caixa de entrada.
+   O que aparece: o painel do Supabase (Dashboard).
+
+4. Se o Supabase pedir para criar uma organização ("Create an organization"):
+   - Name: Kheo (ou o seu nome)
+   - Type: Personal
+   - Plan: Free - $0/month
+   Clique em "Create organization".
+   O que aparece: a tela para criar o primeiro projeto.
+   O plano Free não pede cartão.
+
+5. Clique em "New project" (se ainda não estiver na tela de criar projeto).
+
+6. Preencha:
+   - Project name: kleo
+   - Database Password: clique em "Generate a password" e depois em "Copy".
+     Cole essa senha no seu bloco de notas e guarde. Ela é SEGREDO.
+     O app não usa essa senha, mas ela serve para administrar o banco no futuro.
+   - Region: escolha "South America (São Paulo)".
+     Servidor no Brasil deixa as conversas mais rápidas.
+   - Se aparecerem opções de segurança ("Security options" ou "Data API"), deixe como vieram:
+     "Data API + Connection String" e "Use public schema for Data API".
+     O app precisa da Data API ligada.
+
+7. Clique em "Create new project".
+   O que aparece: a página do projeto avisando que ele está sendo preparado.
+   Espere uns 2 minutos.
+
+8. Está pronto quando aparecer a página inicial do projeto com o menu na esquerda
+   (Table Editor, SQL Editor, Authentication, Storage e os outros).
+
+Próximo: 02-RODAR-O-SQL.txt

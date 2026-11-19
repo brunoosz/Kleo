@@ -1,0 +1,182 @@
+PASSO 13 - CONTAS COM E-MAIL E PAINEL DO DONO
+=============================================
+
+Para que serve
+--------------
+A Kleo agora tem três jeitos de entrar:
+  - Convidado ....... sem e-mail e sem senha (o login anônimo do passo 03). Ideal para idosos.
+  - Conta ........... com e-mail e senha. As Conversas funcionam em qualquer aparelho.
+  - Dono ............ UMA conta com e-mail que administra o app. Só ela vê, em Ajustes, o
+                      "Painel do dono": o cofre onde ficam TODAS as chaves do app.
+REGRA: todas as chaves (IA, voz, mapa do Google e qualquer outra) são gerenciadas SÓ pelo dono,
+no Painel do dono. Ficam no banco do Supabase, numa parte que ninguém acessa pelo app.
+Quem usa a Kleo nunca vê, digita ou guarda chave no aparelho: o servidor do site lê o cofre e
+fala com a IA, com a voz (ElevenLabs) e com o mapa do Google.
+Serviços aceitos no Painel do dono (agrupados assim na tela):
+  - IA ........ Google Gemini, Groq, OpenAI, OpenRouter
+  - Voz ....... ElevenLabs
+  - Mapa ...... Google Maps (Map Tiles API, pago e opcional)
+  - Outros .... chave de um serviço futuro (sem teste automático)
+O arquivo .env.local e as variáveis da Vercel (passos 08 e 10) valem SÓ como RESERVA:
+se o cofre estiver vazio ou todas as chaves de um serviço falharem, o servidor usa a do .env
+(GEMINI_API_KEY, GROQ_API_KEY, OPENAI_API_KEY, OPENROUTER_API_KEY, ELEVENLABS_API_KEY e
+GOOGLE_MAPS_API_KEY).
+
+Antes de começar: passos 01 a 05 prontos (projeto Supabase, supabase.sql rodado, chaves no
+.env.local). Se você já tinha rodado o supabase.sql antes desta versão, rode de novo (passo 02):
+é seguro e ele só acrescenta o que falta.
+
+
+PARTE 1 - LIGAR A ENTRADA COM E-MAIL NO SUPABASE (2 minutos)
+------------------------------------------------------------
+1. No painel do projeto, clique em "Authentication" no menu da esquerda.
+
+2. Clique em "Sign In / Providers".
+   O que aparece: a lista de provedores (Email, Phone, Google...).
+
+3. Clique em "Email".
+   Ligue a chave "Enable Sign in / up" (em alguns painéis: "Enable Email provider").
+
+4. "Confirm email": é a confirmação pelo link no e-mail.
+   - Para testar mais rápido, DESLIGUE. A conta já entra na hora, sem abrir e-mail.
+   - Para a versão final, deixe LIGADA (impede alguém de usar o e-mail de outra pessoa).
+   Com ela ligada, o Supabase grátis manda poucos e-mails por hora. Se a pessoa não receber,
+   peça para conferir a caixa de spam ou desligue a confirmação durante os testes.
+
+5. Deixe "Allow anonymous sign-ins" ligada (passo 03): é o convidado.
+   Deixe "Allow new users to sign up" ligada, senão ninguém cria conta.
+
+6. Clique em "Save".
+
+7. Os links do e-mail (confirmar conta, criar senha nova) precisam voltar para o seu site:
+   a) Clique em "Authentication" > "URL Configuration".
+   b) Em "Site URL", cole o endereço oficial do site (passo 10). Para testar no computador,
+      pode ser http://localhost:5173
+   c) Em "Redirect URLs", clique em "Add URL" e coloque o endereço do site seguido de /entrar
+      (exemplo: https://kleo-app.vercel.app/entrar) e também http://localhost:5173/entrar
+   d) Clique em "Save".
+
+
+PARTE 2 - CRIAR A SUA CONTA NO APP (1 minuto)
+---------------------------------------------
+1. Abra a Kleo (npm run dev no computador ou o endereço do site).
+   O que aparece: a abertura com a logo e, em seguida, a tela "Bem-vindo de volta".
+   Se você já estava dentro como convidado: Ajustes > Conta > "Sair".
+
+2. Toque em "Criar conta".
+
+3. Preencha nome, o @ (a Kleo sugere um a partir do nome), e-mail e senha (pelo menos 6
+   letras ou números). Toque em "Criar minha conta".
+   O que aparece:
+   - Com "Confirm email" desligado: o questionário de boas-vindas (ou o Início).
+   - Com "Confirm email" ligado: o aviso "Quase lá! Abra o e-mail...". Abra o e-mail, toque no
+     link e depois entre com e-mail e senha.
+
+4. Anote o e-mail que usou: é ele que vira dono na Parte 3.
+
+
+PARTE 3 - VIRAR O DONO DO APP (SQL Editor, 1 minuto)
+----------------------------------------------------
+Ninguém vira dono pelo app. Só quem tem acesso ao painel do Supabase consegue.
+1. No painel do projeto, clique em "SQL Editor" > "New query".
+
+2. Cole a linha abaixo, trocando SEU_EMAIL pelo e-mail da Parte 2 (mantenha as aspas simples):
+
+   insert into privado.donos (uid) select id from auth.users where email = 'SEU_EMAIL';
+
+3. Clique em "Run".
+   O que aparece: "Success. 1 rows affected" (ou "No rows returned" com 1 linha inserida).
+   Se aparecer "0 rows": o e-mail está diferente do cadastrado (confira letras maiúsculas e
+   espaços) ou a conta ainda não foi confirmada.
+   Se aparecer "duplicate key": já existe um dono. Só pode haver UM. Para trocar:
+     delete from privado.donos;
+   e rode o insert de novo.
+
+4. No app: Ajustes > Conta > "Sair" e entre de novo com o e-mail e a senha.
+   O que aparece em Ajustes > Conta: "Dono do app". E, mais abaixo, a seção "Painel do dono".
+
+
+PARTE 4 - COLOCAR AS CHAVES NO PAINEL DO DONO (3 minutos)
+---------------------------------------------------------
+Você precisa das chaves do passo 08 (Gemini e, se quiser, Groq). Para vozes naturais, uma
+chave do ElevenLabs (https://elevenlabs.io/app/settings/api-keys, grátis até uns 10 mil
+caracteres por mês). Para o mapa do Google (opcional, PAGO), uma chave do Google Cloud com a
+"Map Tiles API" ativada e conta de faturamento com cartão. Nessa chave NÃO coloque restrição
+de site (HTTP referrer): quem usa a chave é o servidor, não o navegador.
+
+1. Ajustes > Painel do dono > "Adicionar chave".
+
+2. Toque no serviço. Eles aparecem em grupos: IA (Google Gemini, Groq, OpenRouter, OpenAI),
+   Voz (ElevenLabs), Mapa (Google Maps) e Outros.
+   O link "Pegar a chave" abre o site certo, se ainda não tiver.
+
+3. Cole a chave inteira no campo "Chave". Se ela parecer de outro serviço, o app avisa.
+
+4. Apelido (opcional): por exemplo "conta do Bruno". Modelo (opcional): deixe "Padrão".
+
+5. Toque em "Guardar no cofre".
+   O que aparece: a chave na lista, só com os 4 últimos caracteres (ninguém vê o resto,
+   nem você).
+
+6. Toque no botão "Testar" (ícone de sinal) da chave, ou em "Testar todas" ao lado do nome do
+   serviço. O teste é feito pelo servidor e nunca mostra a chave.
+   O que aparece: "Funcionou (xxx ms)". Se falhar, a mensagem explica (chave recusada, cota
+   acabou, API desligada...).
+   O teste precisa do servidor do app: funciona no npm run dev e no site publicado, e exige a
+   SUPABASE_SERVICE_ROLE_KEY no .env.local e na Vercel (passos 04 e 05).
+
+7. Pode colocar mais de uma chave do mesmo serviço. A primeira da lista é usada primeiro; se a
+   cota dela acabar, o servidor passa para a próxima sozinho. Use as setas para mudar a ordem
+   e o interruptor para desligar uma chave sem apagar.
+
+8. Confira: Ajustes > Inteligência artificial deve mostrar "IA da Kleo: ligada".
+   Em Ajustes > Voz aparece "Voz natural ligada" (com a chave do ElevenLabs). As pessoas só
+   escolhem a voz e a velocidade; sem chave, a Kleo usa a voz do aparelho.
+   Em Ajustes > Mapa aparece "Mapa do Google disponível" (com a chave do Google Maps), e o
+   mapa ganha as camadas Google e Google Satélite. Sem chave, só o mapa grátis.
+
+ATENÇÃO (banco antigo): para guardar Google Maps ou Outros, o supabase.sql precisa aceitar
+esses serviços. Se aparecer "O banco ainda não aceita esse serviço", rode o supabase.sql novo
+deste kit (passo 02). Enquanto isso, a GOOGLE_MAPS_API_KEY na Vercel serve de reserva.
+
+
+O QUE OS USUÁRIOS VEEM
+----------------------
+- Nada de chave. O Painel do dono só aparece para a conta do dono.
+- Versões antigas que guardavam chave no aparelho (ElevenLabs, Google Maps, IA) apagam essas
+  chaves sozinhas na primeira vez que o app novo abre.
+- Convidados e contas comuns veem "IA da Kleo: ligada" e conversam normalmente.
+- Em Ajustes > Conta, o convidado pode "Transformar em conta" (coloca e-mail e senha e mantém
+  o @, os contatos e as conversas).
+- "Excluir conta" apaga o @, os contatos e os avisos no servidor. Se o dono excluir a própria
+  conta, deixa de ser dono, mas as chaves continuam no cofre servindo o app.
+
+
+SE DER ERRADO
+-------------
+"Só o dono do app pode mexer nas chaves."
+  A conta que entrou não está em privado.donos. Faça a Parte 3 e entre de novo.
+
+O Painel do dono não aparece, mesmo depois do insert.
+  Saia (Ajustes > Conta > Sair) e entre de novo: o app confere o papel ao entrar.
+  Confira também se entrou com e-mail (convidado nunca é dono).
+
+"O banco precisa ser atualizado: rode o arquivo supabase.sql de novo..."
+  O banco é de uma versão antiga. Rode o supabase.sql deste kit (passo 02).
+
+"O servidor ainda não lê o cofre: falta a SUPABASE_SERVICE_ROLE_KEY..."
+  Coloque a Secret key do Supabase no .env.local (passo 05) e na Vercel (passo 10) e publique
+  de novo.
+
+"A entrada com e-mail está desligada no servidor."
+  Faça a Parte 1 (Enable Sign in / up em Authentication > Sign In / Providers > Email).
+
+"Falta confirmar o e-mail."
+  Abra o e-mail que o Supabase mandou e toque no link. Não chegou? Veja o spam ou desligue
+  "Confirm email" (Parte 1, item 4) durante os testes.
+
+O link do e-mail abre uma página de erro ou "link expirado".
+  Confira "Site URL" e "Redirect URLs" (Parte 1, item 7). O link vale por pouco tempo: peça
+  outro em "Esqueci a senha".
+
+Próximo: 14-INSTALADORES-PC-ANDROID-IPHONE.txt

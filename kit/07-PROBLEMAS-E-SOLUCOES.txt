@@ -1,0 +1,76 @@
+PROBLEMAS E SOLUÇÕES
+====================
+
+Mensagem no app: No Supabase, ligue "Allow anonymous sign-ins"...
+  O login anônimo está desligado. Faça o 03-LIGAR-LOGIN-ANONIMO.txt.
+
+Mensagem no app: O banco ainda não foi preparado. Rode o arquivo supabase/schema.sql...
+  As tabelas não existem. Faça o 02-RODAR-O-SQL.txt.
+
+Mensagem no app: O Supabase recusou. Rode de novo o arquivo supabase/schema.sql...
+  Alguma regra está faltando. Rode o supabase.sql de novo (passo 02). É seguro.
+
+Mensagem no app: A chave do Supabase não confere...
+  A URL ou a chave foi copiada errada. Copie de novo (passo 04), confira se não sobrou espaço
+  no .env.local e reinicie o npm run dev.
+
+Mensagem no app: Essa é a chave secreta (secret ou service_role)...
+  Você colou a secret no lugar da publishable. Copie a Publishable key (sb_publishable_...).
+  Se a secret chegou a ir para o app, para o GitHub ou para alguém: no Supabase, abra
+  Project Settings > API Keys, apague essa secret key e crie outra. Depois atualize o
+  .env.local e a Vercel.
+
+Mensagem no app: Não consegui salvar agora. Confira a internet e tente de novo.
+Ou: as mensagens ficam com o relógio e não saem.
+  1. Confira a internet do aparelho.
+  2. Confira se o projeto do Supabase não está pausado (veja abaixo).
+  As mensagens de texto e os pedidos de ajuda ficam guardados e saem sozinhos quando voltar.
+
+Ajustes > Conversas mostra "Desligadas", mesmo com o .env.local
+  - O nome do arquivo precisa ser exatamente .env.local (sem .txt) e ficar dentro da pasta kleo-app.
+  - Os nomes precisam ser exatamente VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.
+  - Depois de salvar, pare o npm run dev (Ctrl+C) e rode de novo.
+
+Ajustes > Conversas mostra "Modo demonstração"
+  Toque em "Sair da demonstração". A demonstração, quando escolhida, tem prioridade.
+
+Projeto pausado (o problema mais comum!)
+  No plano grátis, o projeto PAUSA depois de 7 dias sem uso. Aí nada conecta.
+  Como reativar:
+  1. Entre em https://supabase.com/dashboard e abra o projeto kleo.
+  2. Aparece o aviso de projeto pausado. Clique no botão para restaurar ("Restore project").
+  3. Espere alguns minutos, até a página do projeto voltar ao normal. Nenhum dado é perdido.
+  Dica: abra o app pelo menos uma vez por semana e, sem falta, 1 ou 2 dias antes da apresentação.
+  Um projeto pausado pode ser restaurado depois, mas não deixe para a última hora.
+
+Muita gente criando conta no mesmo Wi-Fi (erro de limite)
+  O Supabase deixa 30 contas anônimas novas por hora por internet.
+  Aumente em Authentication > Rate Limits (veja o extra do passo 03).
+
+Os avisos com o app fechado não chegam
+  Precisam do site publicado (https), das chaves VAPID e da SUPABASE_SERVICE_ROLE_KEY na Vercel.
+  Veja os passos 09 e 10 e confira Ajustes > Conversas > "Avisos com o app fechado".
+  No iPhone, só funciona com a Kleo instalada na tela de início (iOS 16.4 ou mais novo).
+
+Áudio não envia
+  - Grave até 5 minutos (cada áudio pode ter até 5 MB).
+  - Libere o microfone no cadeado ao lado do endereço do site.
+  - Áudio precisa de internet para sair (ele não fica na fila).
+
+Apagar dados de teste
+  - Uma pessoa: Authentication > Users > clique no usuário > "Delete user".
+    Isso apaga o perfil, o @ e os contatos dela.
+  - Tudo de uma tabela: Table Editor > escolha a tabela > marque as linhas > "Delete".
+  - Pelo app: Ajustes > Conversas > "Apagar minha conta das Conversas".
+
+Limites do plano grátis (sem cartão)
+  - Banco de dados: 500 MB
+  - Arquivos (áudios): 1 GB. Um áudio de 5 minutos tem cerca de 1 MB.
+  - Tráfego: 5 GB por mês
+  - Usuários: 50 mil por mês
+  - Tempo real: 200 conexões ao mesmo tempo e 2 milhões de mensagens por mês
+  - 2 projetos grátis ativos por conta
+  - Pausa depois de 7 dias sem uso (veja acima)
+  Para a apresentação e os testes, sobra muito.
+
+Próximo: 08-CHAVES-DE-IA-Gemini-e-Groq.txt

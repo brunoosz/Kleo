@@ -1,0 +1,43 @@
+{
+  "id": "/",
+  "name": "Kleo - Mais autonomia. Mais liberdade.",
+  "short_name": "Kleo",
+  "description": "Assistente pessoal para idosos, pessoas com deficiência e qualquer pessoa: converse por voz com a Kleo, receba lembretes de remédios e rotinas, organize a agenda, ache caminhos no mapa e fale com quem você ama.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f4f2",
+  "theme_color": "#f7f4f2",
+  "categories": ["health", "lifestyle", "productivity", "social"],
+  "icons": [
+    { "src": "/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Falar com a Kleo",
+      "short_name": "Falar",
+      "description": "Abrir a conversa com a assistente",
+      "url": "/chat",
+      "icons": [{ "src": "/atalho-chat.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Mapa",
+      "short_name": "Mapa",
+      "description": "Rotas e lugares por perto",
+      "url": "/mapa",
+      "icons": [{ "src": "/atalho-mapa.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Pessoas",
+      "short_name": "Pessoas",
+      "description": "Conversar com família e amigos",
+      "url": "/pessoas",
+      "icons": [{ "src": "/atalho-pessoas.png", "sizes": "96x96", "type": "image/png" }]
+    }
+  ]
+}

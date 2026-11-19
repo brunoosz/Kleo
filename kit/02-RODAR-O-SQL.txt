@@ -1,0 +1,47 @@
+PASSO 2 - PREPARAR O BANCO (RODAR O SQL)
+========================================
+
+O arquivo supabase.sql (nesta pasta) cria tudo de uma vez: as tabelas, as regras de segurança
+(cada pessoa só vê o que é dela), a pasta dos áudios e o tempo real.
+
+1. No painel do projeto, clique em "SQL Editor" no menu da esquerda.
+   O que aparece: o editor de SQL.
+
+2. Clique em "New query" (botão com o sinal de +).
+   O que aparece: uma aba em branco para escrever.
+
+3. Abra o arquivo supabase.sql desta pasta no Bloco de Notas ou no VS Code.
+   Aperte Ctrl+A (selecionar tudo) e depois Ctrl+C (copiar).
+
+4. Volte ao SQL Editor, clique dentro da área em branco e aperte Ctrl+V (colar).
+   Confira: o texto começa com "-- =====" e a última linha é "commit;".
+
+5. Clique em "Run" (canto de baixo, à direita) ou aperte Ctrl+Enter.
+
+6. Pode aparecer o aviso "Potential issue detected with your query", falando de
+   "destructive operation". É por causa das linhas "drop ... if exists", que só apagam e
+   recriam as regras do próprio script. Clique em "Run this query".
+
+7. Resultado esperado, embaixo do editor:
+   Success. No rows returned
+
+8. Confira se deu certo:
+   - Clique em "Table Editor" no menu da esquerda.
+     Devem aparecer as tabelas: contatos, conversas, mensagens, participantes, perfis
+     e push_inscricoes.
+   - Clique em "Storage" no menu da esquerda.
+     Deve aparecer o balde (bucket) "audios", privado.
+
+Rodar de novo
+-------------
+Pode rodar o mesmo arquivo de novo quando quiser (por exemplo, se alguma coisa falhou no meio).
+Ele não apaga dados e não dá erro na segunda vez.
+O resultado é o mesmo: "Success. No rows returned".
+
+Se aparecer erro em vermelho
+----------------------------
+- Confira se colou o arquivo INTEIRO (do começo até "commit;").
+- Rode de novo.
+- Se o erro continuar, copie a mensagem e veja 07-PROBLEMAS-E-SOLUCOES.txt.
+
+Próximo: 03-LIGAR-LOGIN-ANONIMO.txt
